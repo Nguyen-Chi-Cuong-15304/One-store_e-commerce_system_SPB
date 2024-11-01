@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Thay đổi màu của thanh trượt */
+        .price-range::-webkit-slider-runnable-track {
+            background: linear-gradient(90deg, #21D192, #17a2b8); /* Màu của thanh trượt */
+            height: 6px; /* Độ dày của thanh trượt */
+            border-radius: 3px;
+        }
+    
+        /* Thay đổi màu của nút điều chỉnh */
+        .price-range::-webkit-slider-thumb {
+            background-color: #17a2b8; /* Màu của nút */
+            border: 2px solid #21D192; /* Đường viền của nút */
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
+            cursor: pointer;
+            margin-top: -7px; /* Để căn chỉnh nút với thanh trượt */
+        }
+    
+        /* Firefox */
+        .price-range::-moz-range-track {
+            background: linear-gradient(90deg, #21D192, #17a2b8); /* Màu của thanh trượt */
+            height: 6px;
+            border-radius: 3px;
+        }
+    
+        .price-range::-moz-range-thumb {
+            background-color: #17a2b8;
+            border: 2px solid #21D192;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
+            cursor: pointer;
+        }
+    
+        /* MS Edge */
+        .price-range::-ms-track {
+            background: transparent; /* MS Edge yêu cầu transparent cho track */
+            border-color: transparent;
+            color: transparent;
+            height: 6px;
+        }
+    
+        .price-range::-ms-fill-lower {
+            background: #21D192; /* Màu của phần bên trái nút trượt */
+        }
+    
+        .price-range::-ms-fill-upper {
+            background: #17a2b8; /* Màu của phần bên phải nút trượt */
+        }
+    
+        .price-range::-ms-thumb {
+            background-color: #17a2b8;
+            border: 2px solid #21D192;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
+            cursor: pointer;
+        }
+        .card:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <img src="pic_data/logo.png" alt="">
+          <a class="navbar-brand" href="/" style="color: #21D192; font-family: Georgia, 'Times New Roman', Times, serif;">NÔNG SẢN SẠCH</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/product">Sản phẩm</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Tùy chọn
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/category">Loại mặt hàng</a></li>
+                  <li><a class="dropdown-item" href="/cate_region">Đặc sản theo miền</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success me-2" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
+              <li class="nav-item me-2">
+                <a href="/login" class="btn btn-primary">Login</a>
+              </li>
+              <li class="nav-item">
+                <a href="/register" class="btn btn-primary me-2">Register</a>
+              </li>
+            </ul>
+
+            <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+              <li class="nav-item me-2 user-info">
+                <a href="/myprofile" class="btn btn-link username"><span th:text="${#authentication.name}"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/myprofile">Thông tin cá nhân</a></li>
+                  <li><a class="dropdown-item" href="/myorder">Đơn hàng của tôi</a></li>
+                  <li><a class="dropdown-item" href="/mycart">Giỏ hàng</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li method="post"><input type="hidden" th:name="${_csrf.parameterName}" value="${_csrf.token}"/><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+              </li>
+              </ul>
+              <ul method="post" sec:authorize="isAuthenticated()">
+                <input type="hidden" th:name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <a href="/logout" class="btn btn-secondary">Logout</a>
+              </ul>
+          </div>
+        </div>
+      </nav>
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="mt-5 pt-4">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="prd.html">Category</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span>Product</span></li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Category Page -->
+<div class="container mt-3">
+    <div class="row">
+        <!-- Filter Sidebar -->
+        <div class="col-md-3">
+            <h5>Bộ lọc sản phẩm</h5>
+
+            <!-- Category Filter -->
+            <div class="mb-4">
+                <h6>Danh mục</h6>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="radio" name="category" id="cat1" value="1">
+                        <label class="form-check-label" for="cat1">Danh mục 1</label>
+                    </li>
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="radio" name="category" id="cat2" value="2">
+                        <label class="form-check-label" for="cat2">Danh mục 2</label>
+                    </li>
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="radio" name="category" id="cat3" value="3">
+                        <label class="form-check-label" for="cat3">Danh mục 3</label>
+                    </li>
+                </ul>
+            </div>
+
+
+            <!-- Sort Filter -->
+            <div class="mb-4">
+                <h6>Sắp xếp theo</h6>
+                <select class="form-select">
+                    <option value="popularity">Phổ biến nhất</option>
+                    <option value="rating">Đánh giá cao</option>
+                    <option value="newest">Mới nhất</option>
+                    <option value="price-low">Giá: Thấp đến cao</option>
+                    <option value="price-high">Giá: Cao đến thấp</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="col-md-9">
+            <div class="row">
+                <!-- Product Card 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 1</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>$100.00</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 2</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>79.99$</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 3</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>$49.99</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 3</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>$49.99</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 3</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>$49.99</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 3</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>$49.99</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 3</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>$49.99</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Sản phẩm 3</h5>
+                            <p class="card-text">Mô tả ngắn về sản phẩm.</p>
+                            <p class="text-danger"><b>$49.99</b></p>
+                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More product cards here... -->
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+     <!-- Footer -->
+     <footer class="text-center text-lg-start text-dark mt-3" style="background-color: #ECEFF1">
+        <!-- Section: Social media -->
+        <section class="d-flex justify-content-between p-4 text-white"
+        style="background-color: #21D192">
+        <!-- Left -->
+        <div class="me-5">
+        <span>Get connected with us on social networks:</span>
+        </div>
+        <!-- Left -->
+        
+        <!-- Right -->
+        <div>
+        <a href="" class="text-white me-4">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="fab fa-github"></i>
+        </a>
+        </div>
+        <!-- Right -->
+        </section>
+        <!-- Section: Social media -->
+        
+        <!-- Section: Links  -->
+        <section class="">
+        <div class="container text-center text-md-start mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+            <!-- Content -->
+            <h6 class="text-uppercase fw-bold">Company name</h6>
+            <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px"
+                />
+            <p>
+              Here you can use rows and columns to organize your footer
+              content. Lorem ipsum dolor sit amet, consectetur adipisicing
+              elit.
+            </p>
+          </div>
+          <!-- Grid column -->
+        
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold">Products</h6>
+            <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px"
+                />
+            <p>
+              <a href="#!" class="text-dark">MDBootstrap</a>
+            </p>
+            <p>
+              <a href="#!" class="text-dark">MDWordPress</a>
+            </p>
+            <p>
+              <a href="#!" class="text-dark">BrandFlow</a>
+            </p>
+            <p>
+              <a href="#!" class="text-dark">Bootstrap Angular</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+        
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold">Useful links</h6>
+            <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px"
+                />
+            <p>
+              <a href="#!" class="text-dark">Your Account</a>
+            </p>
+            <p>
+              <a href="#!" class="text-dark">Become an Affiliate</a>
+            </p>
+            <p>
+              <a href="#!" class="text-dark">Shipping Rates</a>
+            </p>
+            <p>
+              <a href="#!" class="text-dark">Help</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+        
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold">Contact</h6>
+            <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px"
+                />
+            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+            <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>
+            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+        </div>
+        </section>
+        <!-- Section: Links  -->
+        
+        <!-- Copyright -->
+        <div
+         class="text-center p-3"
+         style="background-color: rgba(0, 0, 0, 0.2)"
+         >
+        © 2020 Copyright:
+        <a class="text-dark" href="https://mdbootstrap.com/"
+         >MDBootstrap.com</a
+        >
+        </div>
+        <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
