@@ -193,7 +193,10 @@
             </ul> 
             <ul method="post" sec:authorize="isAuthenticated()" class="navbar-nav">
                 <input type="hidden" th:name="${_csrf.parameterName}" value="${_csrf.token}" />
-                <a href="/logout" class="btn btn-secondary">Logout</a>
+                <form th:action="@{/logout}" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-secondary">Logout</button>
+              </form>
+              
             </ul>
           </div>
         </div>

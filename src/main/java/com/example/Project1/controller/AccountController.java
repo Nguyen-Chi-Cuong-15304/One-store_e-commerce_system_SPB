@@ -37,14 +37,14 @@ public class AccountController {
         model.addAttribute("success", false);
         return "register";
     }
-    @GetMapping("/mylogin")
+    @GetMapping("/login")
     public String login(Model model) {
         // RegisterDto registerDto = new RegisterDto();
         // model.addAttribute(registerDto);
         // model.addAttribute("success", false);
         WebUserDto webUserDto = new WebUserDto();
         model.addAttribute(webUserDto);
-        return "mylogin";
+        return "login";
     }
     
 

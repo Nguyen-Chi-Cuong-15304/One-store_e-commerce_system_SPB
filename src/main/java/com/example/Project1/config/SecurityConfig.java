@@ -34,7 +34,9 @@ public class SecurityConfig {
                 .anyRequest().authenticated()                    // Mọi yêu cầu khác đều phải đăng nhập
             )
             .formLogin(form -> form
-                // .loginPage("/mylogin")                             // Định nghĩa trang đăng nhập tùy chỉnh
+                .loginPage("/login.html")                             // Định nghĩa trang đăng nhập tùy chỉnh
+                .loginProcessingUrl("/perform_login")            // Đường dẫn xử lý khi submit form login
+                .usernameParameter("email")                     // Username parameter, tên của ô input trên form
                 .defaultSuccessUrl("/", true)                // Chuyển đến trang home sau khi đăng nhập thành công
                 // .usernameParameter("email")
                 // .passwordParameter("password")
