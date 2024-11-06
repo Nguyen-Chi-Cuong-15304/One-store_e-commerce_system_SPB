@@ -1,0 +1,4 @@
+Hiển thị các sản phẩm theo danh mục cate
+Thực hiện hiển thị theo sắp xếp theo giá/ độ mới
+Trang quản lys đơn hang cho admin ( cập nhật trạng thai)
+Thống kê doanh thu ( nếu kịp )
