@@ -1,6 +1,7 @@
 package com.example.Project1.modals;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,17 +30,24 @@ public class ProductDto {
     @NotNull 
     private int stockQuantity;
 
-    @NotEmpty
-    private String category;
+    @NotNull
+    private List<Integer> categories;
 
-    public String getCategory() {
-        return category;
+    @NotNull
+    private List<Integer>regions;
+
+    public List<Integer> getRegions() {
+        return regions;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setRegions(List<Integer> regions) {
+        this.regions = regions;
     }
 
+    public List<Integer> getCategories() {
+        return categories;
+    }
+    
     public String getProductName() {
         return productName;
     }
@@ -72,10 +80,6 @@ public class ProductDto {
         this.supplierID = supplierID;
     }
 
- 
-
- 
-
     public int getStockQuantity() {
         return stockQuantity;
     }
@@ -90,6 +94,10 @@ public class ProductDto {
 
     public void setLinkImg(MultipartFile linkImg) {
         this.linkImg = linkImg;
+    }
+
+    public void setCategories(List<Integer> categories) {
+        this.categories = categories;
     }
 
 }

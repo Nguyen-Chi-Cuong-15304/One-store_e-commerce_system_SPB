@@ -55,7 +55,7 @@ public class ProductService {
         product.setPrice(productDto.getPrice());
         product.setSupplierID(productDto.getSupplierID());
         product.setLinkImg(fileName);
-        product.setCategory(productDto.getCategory());
+        
         product.setStockQuantity(productDto.getStockQuantity());
         productRepository.save(product);
        

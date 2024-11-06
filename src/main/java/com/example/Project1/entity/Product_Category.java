@@ -1,6 +1,9 @@
 package com.example.Project1.entity;
 
+import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
@@ -8,13 +11,13 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "product_category")
-@IdClass(ProductCategoryKey.class)
 public class Product_Category {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     private int productID;
 
-    @Id
     private int categoryID;
 
     // Getters and Setters

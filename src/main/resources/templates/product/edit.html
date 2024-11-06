@@ -63,16 +63,30 @@
                         <label for="productName" class="col-form-label">Product Name</label>
                         <input class="form-control" th:field="${productDto.productName}" required>
                     </div>
+
                     <div class="col">
                         <label class="col-form-label">Category</label>
-                        <div class="col">
-                            
-                            <select class="form-control" th:field="${productDto.category}" required>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Clothing">Clothing</option>
-                                <option value="Books">Books</option>
-                                <option value="Furniture">Furniture</option>
-                            </select>
+                        <div th:each="category : ${categories}" class="form-check">
+                            <input type="checkbox" 
+                                   class="form-check-input"
+                                   th:field="*{categories}"
+                                   th:value="${category.categoryID}"/>
+                            <label class="form-check-label" 
+                                   th:text="${category.categoryName}">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <label class="col-form-label">Region</label>
+                        <div th:each="region : ${regions}" class="form-check">
+                            <input type="checkbox" 
+                                   class="form-check-input"
+                                   th:field="*{regions}"
+                                   th:value="${region.regionID}"/>
+                            <label class="form-check-label" 
+                                   th:text="${region.regionName}">
+                            </label>
                         </div>
                     </div>
                     

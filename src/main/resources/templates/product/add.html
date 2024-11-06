@@ -20,6 +20,21 @@
             border-radius: 10px;
             background-color: #f9f9f9;
         }
+        select[multiple] {
+            height: 150px !important;
+        }
+
+        /* Style cho các option được chọn */
+        select[multiple] option:checked {
+            background: #007bff !important;  /* Màu nền khi được chọn - có thể thay đổi */
+            color: white !important;         /* Màu chữ khi được chọn */
+            font-weight: bold;
+        }
+
+        /* Style cho hover state */
+        select[multiple] option:hover {
+            background: #e9ecef !important;
+        }
         label {
             display: block;
             margin-bottom: 8px;
@@ -60,14 +75,27 @@
                     </div>
                     <div class="col">
                         <label class="col-form-label">Category</label>
-                        <div class="col">
-                            
-                            <select class="form-control" th:field="${productDto.category}" required>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Clothing">Clothing</option>
-                                <option value="Books">Books</option>
-                                <option value="Furniture">Furniture</option>
-                            </select>
+                        <div th:each="category : ${categories}" class="form-check">
+                            <input type="checkbox" 
+                                   class="form-check-input"
+                                   th:field="*{categories}"
+                                   th:value="${category.categoryID}"/>
+                            <label class="form-check-label" 
+                                   th:text="${category.categoryName}">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <label class="col-form-label">Region</label>
+                        <div th:each="region : ${regions}" class="form-check">
+                            <input type="checkbox" 
+                                   class="form-check-input"
+                                   th:field="*{regions}"
+                                   th:value="${region.regionID}"/>
+                            <label class="form-check-label" 
+                                   th:text="${region.regionName}">
+                            </label>
                         </div>
                     </div>
                     
@@ -100,7 +128,7 @@
                         <button type="submit" class="btn btn-primary">Add Product</button>
                     </div>
                 </form>
-                </form>
+                
             </div>
         </div>
     </div>
