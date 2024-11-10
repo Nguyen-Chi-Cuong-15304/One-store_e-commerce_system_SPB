@@ -25,7 +25,7 @@ public class Product {
     private String linkImg;
 
     private int viewCount;
-
+    
     public int getViewCount() {
         return viewCount;
     }

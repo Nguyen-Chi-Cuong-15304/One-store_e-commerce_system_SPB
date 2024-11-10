@@ -145,26 +145,30 @@
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/product">Sản phẩm</a>
+                <a class="nav-link" href="/navi/categoryDefault">Sản phẩm</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/navi/categoryDefault">Bộ sưu tập</a>
+              </li>
+              <li>
+                <a class="nav-link" href="/navi/categoryDefault">Nhà cung cấp</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Tùy chọn
+                  Tìm kiếm tùy chọn
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="/category">Loại mặt hàng</a></li>
-                  <li><a class="dropdown-item" href="/cate_region">Đặc sản theo miền</a></li>
+                  <li><a class="dropdown-item" href="/navi/categoryDefault">Loại mặt hàng</a></li>
+                  <li><a class="dropdown-item" href="/navi/categoryByRegion">Đặc sản theo miền</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-              </li>
-              <li class="nav-item" sec:authorize="hasRole('ROLE_customer')">
+
+              <li class="nav-item" sec:authorize="hasRole('ROLE_admin')">
                 <a class="nav-link" href="/supplier">Điều chỉnh Nhà phân phối</a>
               </li>
-              <li class="nav-item" sec:authorize="hasRole('ROLE_customer')">
+              <li class="nav-item" sec:authorize="hasRole('ROLE_admin')">
                 <a class="nav-link" href="/product">Điều chỉnh Sản phẩm</a>
               </li>
             </ul>

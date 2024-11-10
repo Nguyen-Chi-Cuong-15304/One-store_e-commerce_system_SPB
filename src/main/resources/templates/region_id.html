@@ -128,9 +128,9 @@
             <div class="mb-4">
                 <h6>Danh mục</h6>
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="/navi/categoryDefault">Tất cả</a></li>
-                    <li class="list-group-item" th:each="category: ${categories}">
-                        <a th:href="@{/navi/showChoosenCategory/{id}(id=${category.categoryID})}" th:text="${category.categoryName}"></a>
+                    <li class="list-group-item"><a href="/navi/categoryByRegion">Tất cả</a></li>
+                    <li class="list-group-item" th:each="region: ${regions}">
+                        <a th:href="@{/navi/categoryByRegion/{id}(id=${region.regionID})}" th:text="${region.regionName}"></a>
                     </li>
                 </ul>
             </div>
@@ -138,7 +138,7 @@
 
             <!-- Sort Filter -->
             <div class="mb-4">
-                <form method="get" th:action="@{/navi/showChoosenCategory/{id}(id=${currentID})}" id="sortForm">
+                <form method="get" th:action="@{/navi/categoryByRegion/{id}(id=${currentID})}" id="sortForm">
                     
                     <label for="sortOption">Sắp xếp theo</label>
                     <select id="sortOption" name="sortOption" class="form-select" onchange="document.getElementById('sortForm').submit()">
