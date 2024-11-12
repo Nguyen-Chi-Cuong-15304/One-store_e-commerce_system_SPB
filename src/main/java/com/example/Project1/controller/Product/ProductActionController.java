@@ -27,8 +27,6 @@ import com.example.Project1.repository.ProductRepository;
 import com.example.Project1.repository.Product_CategoryRepository;
 import com.example.Project1.repository.Product_RegionRepository;
 import com.example.Project1.repository.RegionRepository;
-import com.example.Project1.service.ProductService;
-
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;

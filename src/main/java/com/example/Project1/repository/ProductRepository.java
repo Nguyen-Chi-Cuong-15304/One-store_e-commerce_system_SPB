@@ -13,6 +13,8 @@ import com.example.Project1.entity.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     public Product findByproductName(String productName);
+
+    List<Product> findByProductNameContainingIgnoreCase(String productName);
     
     @Query("SELECT p FROM Product p Order by p.viewCount DESC")
     List<Product> findTopViewProducts(PageRequest pageRequest);

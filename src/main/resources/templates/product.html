@@ -24,66 +24,135 @@
           .carousel-item {
               transition: transform 1s ease, opacity 1s ease;
           }
+          .search-container {
+                position: relative;
+            }
+
+            #suggestions {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                border: 1px solid #ccc;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                z-index: 1000; /* Đảm bảo suggestions xuất hiện trên các thành phần khác */
+                max-height: 200px;
+                overflow-y: auto; /* Nếu danh sách dài, sẽ có thanh cuộn */
+            }
+
+            .suggestions-list {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                cursor: pointer;
+            }
+            .suggestion-item {
+                padding: 8px 16px;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            .suggestion-item:hover {
+                background-color: lightgreen;
+            }
+
         </style>
     </head>
 <body>
-    <div class="container mt-5">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <div class="container-fluid">
-                <img src="pic_data/logo.png" alt="">
-              <a class="navbar-brand" href="/" style="color: #21D192; font-family: Georgia, 'Times New Roman', Times, serif;">NÔNG SẢN SẠCH</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/product">Sản phẩm</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Tùy chọn
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="/category">Loại mặt hàng</a></li>
-                      <li><a class="dropdown-item" href="/cate_region">Đặc sản theo miền</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                  </li>
-                </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success me-2" type="submit">Search</button>
-                </form>
-                <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
-                  <li class="nav-item me-2">
-                    <a href="/login" class="btn btn-primary">Login</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/register" class="btn btn-primary me-2">Register</a>
-                  </li>
-                </ul>
-    
-                <ul class="navbar-nav" sec:authorize="isAuthenticated()">
-                  <li class="nav-item me-2 user-info">
-                    <a href="/myprofile" class="btn btn-link username"><span th:text="${#authentication.name}"></span></a>
-                  </li>
-                  </ul>
-                  <ul method="post" sec:authorize="isAuthenticated()">
-                    <input type="hidden" th:name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <a href="/logout" class="btn btn-secondary">Logout</a>
-                  </ul>
-              </div>
-            </div>
-          </nav>
 
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <img src="pic_data/logo.png" alt="">
+          <a class="navbar-brand" href="/" style="color: #21D192; font-family: Georgia, 'Times New Roman', Times, serif;">NÔNG SẢN SẠCH</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/navi/categoryDefault">Sản phẩm</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/navi/categoryDefault">Bộ sưu tập</a>
+              </li>
+              <li>
+                <a class="nav-link" href="/navi/categoryDefault">Nhà cung cấp</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Tìm kiếm tùy chọn
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/navi/categoryDefault">Loại mặt hàng</a></li>
+                  <li><a class="dropdown-item" href="/navi/categoryByRegion">Đặc sản theo miền</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item" sec:authorize="hasRole('ROLE_admin')">
+                <a class="nav-link" href="/supplier">Điều chỉnh Nhà phân phối</a>
+              </li>
+              <li class="nav-item" sec:authorize="hasRole('ROLE_admin')">
+                <a class="nav-link" href="/product">Điều chỉnh Sản phẩm</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <div class="search-container" style="position: relative;">
+                <input type="text" id="productSearch" placeholder="Search">
+                <div id="suggestions"></div>
+              </div>
+              <button class="btn btn-outline-success me-2" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav" sec:authorize="!isAuthenticated()">
+              <li class="nav-item me-2">
+                <a href="/login" class="btn btn-primary">Login</a>
+              </li>
+              <li class="nav-item">
+                <a href="/register" class="btn btn-primary me-2">Register</a>
+              </li>
+            </ul>
+<!--
+            <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+              <li class="nav-item me-2 user-info">
+                <a href="/myprofile" class="btn btn-link username"><span th:text="${#authentication.name}"></span></a>
+              </li>
+            </ul>
+          -->
+
+            <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+              <li class="nav-item dropdown">
+                <a class="nav-link ms-3 dropdown-toggle user-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="username" th:text="${#authentication.name}"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/navi/categoryDefault">Thông tin cá nhân</a></li>
+                  <li><a class="dropdown-item" href="/userInfo/AllOrders">Danh sách đơn hàng</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <ul class="navbar-nav" sec:authorize="hasRole('ROLE_customer')">
+              <li class="nav-item me-2">
+                <a href="/product_customer/shoppingcart" class="btn btn-outline-info"><i class="fa-solid fa-cart-shopping"></i></a>
+              </li>
+            </ul> 
+            <ul method="post" sec:authorize="isAuthenticated()" class="navbar-nav">
+                <input type="hidden" th:name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <form th:action="@{/logout}" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-secondary">Logout</button>
+              </form>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <div class="container mt-5">
         <div class="row pt-5">
             <h3 style="font-family: Georgia, 'Times New Roman', Times, serif;">ProductName</h3>
         </div>
@@ -170,7 +239,7 @@
                 <div class="tab-content" id="productTabContent">
                     <div class="tab-pane fade show active p-3" id="description" role="tabpanel" aria-labelledby="description-tab">
                         <h4>Mô tả sản phẩm</h4>
-                        <p>Đây là phần mô tả chi tiết về sản phẩm, bao gồm thông số kỹ thuật và thông tin bổ sung.</p>
+                        <p><span th:text="${product.description}"></span></p>
                     </div>
                     <div class="tab-pane fade p-3" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                         <h4>Đánh giá của khách hàng</h4>
@@ -364,5 +433,107 @@
     </div>
     <!-- Copyright -->
     </footer>
+
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('productSearch');
+    const suggestionsContainer = document.getElementById('suggestions');
+
+    // Add error handling for missing elements
+    if (!searchInput || !suggestionsContainer) {
+        console.error('Required DOM elements not found');
+        return;
+    }
+
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.trim();
+
+        if (query.length > 0) {
+            fetch(`/product_customer/search?query=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data received:', data);
+                    // Ensure data is an array
+                    const products = Array.isArray(data) ? data : [data];
+                    
+                    suggestionsContainer.style.display = 'block';
+                    suggestionsContainer.innerHTML = '';
+
+                    if (products.length > 0) {
+                        const list = document.createElement('ul');
+                        list.className = 'suggestions-list';
+
+                        products.forEach(product => {
+                            // Validate product object has required properties
+                            if (!product.productID || !product.productName) {
+                                console.warn('Invalid product data:', product);
+                                return;
+                            }
+
+                            const listItem = document.createElement('li');
+                            // Add price and other relevant information
+                            listItem.innerHTML = `
+                                <span class="product-name">${product.productName}</span>
+                                ${product.price ? `<span class="product-price">${product.price.toFixed(2)} đ</span>` : ''}
+                            `;
+                            listItem.className = 'suggestion-item';
+
+                            listItem.addEventListener('click', () => {
+                                window.location.href = `/product_customer/product?id=${product.productID}`;
+                            });
+
+                            list.appendChild(listItem);
+                            console.log('add Product:', product);
+                        });
+
+                        suggestionsContainer.appendChild(list);
+                        console.log('add list successful:', list);
+                    } else {
+                        const noResults = document.createElement('div');
+                        noResults.textContent = 'Không tìm thấy sản phẩm nào';
+                        noResults.className = 'no-results';
+                        suggestionsContainer.appendChild(noResults);
+                    }
+                    
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    suggestionsContainer.innerHTML = `
+                        <div class="error-message">
+                            Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại sau.
+                        </div>
+                    `;
+                });
+        } else {
+            suggestionsContainer.style.display = 'none';
+            suggestionsContainer.innerHTML = '';
+        }
+    });
+
+    // Add debouncing to prevent too many API calls
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            // Trigger search here
+        }, 300);
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!suggestionsContainer.contains(e.target) && e.target !== searchInput) {
+            suggestionsContainer.innerHTML = '';
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+});
+
+
+
+    </script>
 </body>
 </html>

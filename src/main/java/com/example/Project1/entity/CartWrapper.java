@@ -4,17 +4,17 @@ import java.util.List;
 
 public class CartWrapper {
      List<CartItem> cartItems;
-     Order order;
+     Orders order;
 
     public List<CartItem> getCartItems() {
         return cartItems;
     }
 
-    public Order getOrder() {
+    public Orders getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(Orders order) {
         this.order = order;
     }
 

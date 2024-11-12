@@ -1,74 +1,94 @@
-// package com.example.Project1.controller.Payment;
+package com.example.Project1.controller.Payment;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RequestParam;
-// import org.springframework.web.bind.annotation.RestController;
+import java.math.BigDecimal;
+import java.util.Date;
 
-// import com.example.Project1.service.PaypalService;
-// import com.paypal.api.payments.Links;
-// import com.paypal.api.payments.Payment;
-// import com.paypal.base.rest.PayPalRESTException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import com.example.Project1.entity.CartWrapper;
+import com.example.Project1.entity.Orders;
+import com.example.Project1.entity.OrderItem;
+import com.example.Project1.entity.OrderItemWrapper;
+import com.example.Project1.entity.WebUser;
+import com.example.Project1.repository.OrderItemRepository;
+import com.example.Project1.repository.OrderRepository;
+import com.example.Project1.repository.WebUserRepository;
+import com.example.Project1.service.VNPAYService;
 
-// @RestController
-// @RequestMapping("/api/payment")
-// public class PaymentController {
+import jakarta.servlet.http.HttpServletRequest;
 
-//     @Autowired
-//     PaypalService paypalService;
+@Controller
+public class PaymentController {
+    @Autowired
+    private VNPAYService vnPayService;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private WebUserRepository userRepository;
 
-//     @PostMapping("/create")
-//     public ResponseEntity<String> createPayment(
-//             @RequestParam("price") String price,
-//             @RequestParam("currency") String currency,
-//             @RequestParam("method") String method,
-//             @RequestParam("description") String description) {
-//         try {
-//             Payment payment = paypalService.createPayment(
-//                 Double.parseDouble(price), 
-//                 currency, 
-//                 method, 
-//                 "sale",
-//                 description, 
-//                 "http://localhost:8080/api/payment/cancel",
-//                 "http://localhost:8080/api/payment/success");
-            
-//             for(Links links : payment.getLinks()){
-//                 if(links.getRel().equals("approval_url")) {
-//                     return ResponseEntity.ok(links.getHref());
-//                 }
-//             }
-//         } catch (PayPalRESTException e) {
-//             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                                .body("Error occurred: " + e.getMessage());
-//         }
-//         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                            .body("Error occurred");
-//     }
+    // @GetMapping({"", "/"})
+    // public String home(){
+    //     return "createOrder";
+    // }
 
-//     @GetMapping("/success")
-//     public ResponseEntity<String> successPay(
-//             @RequestParam("paymentId") String paymentId,
-//             @RequestParam("PayerID") String payerId) {
-//         try {
-//             Payment payment = paypalService.executePayment(paymentId, payerId);
-//             if(payment.getState().equals("approved")) {
-//                 return ResponseEntity.ok("Payment successful!");
-//             }
-//         } catch (PayPalRESTException e) {
-//             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                                .body("Error occurred: " + e.getMessage());
-//         }
-//         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                            .body("Payment failed");
-//     }
+    // Chuyển hướng người dùng đến cổng thanh toán VNPAY
+    @PostMapping("/submitOrder")
+    public String submidOrder(
+                            
+                            HttpServletRequest request, @ModelAttribute("orderItemWrapper") OrderItemWrapper orderItemWrapper, @ModelAttribute("cartWrapper") CartWrapper cartWrapper){
+        //Lưu thông tin đơn hàng vào database
+                org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        WebUser user = userRepository.findByEmail(email);
+        int userID = user.getUserID();
+        Orders order = orderItemWrapper.getOrder();
+        order.setUserID(userID);
+        order.setStatus("Đã thanh toán");
+        order.setOrderDate(new Date(System.currentTimeMillis()));
+        
+        Date date = order.getOrderDate();
+        orderRepository.save(order);
+        Orders order1 = orderRepository.findByOrderDate(date);
+        int orderID = order1.getOrderID();
+        
+        BigDecimal totalAmount = new BigDecimal(0);
+        for(OrderItem orderItem : orderItemWrapper.getOrderItems()){
+            orderItem.setOrderID(orderID);
+            orderItemRepository.save(orderItem);
+            totalAmount = totalAmount.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
+        }
+        order.setTotalAmount(totalAmount);
+        orderRepository.save(order);
 
-//     @GetMapping("/cancel")
-//     public ResponseEntity<String> cancelPay() {
-//         return ResponseEntity.ok("Payment cancelled");
-//     }
-// }
+        String orderInfo = "Thanh toan don hang " + orderID;
+        int orderTotal = totalAmount.multiply(new BigDecimal(1000)).intValue();
+        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String vnpayUrl = vnPayService.createOrder(request, orderTotal, orderInfo, baseUrl);
+        return "redirect:" + vnpayUrl;
+    }
+
+    // Sau khi hoàn tất thanh toán, VNPAY sẽ chuyển hướng trình duyệt về URL này
+    @GetMapping("/vnpay-payment-return")
+    public String paymentCompleted(HttpServletRequest request, Model model){
+        int paymentStatus =vnPayService.orderReturn(request);
+
+        String orderInfo = request.getParameter("vnp_OrderInfo");
+        String paymentTime = request.getParameter("vnp_PayDate");
+        String transactionId = request.getParameter("vnp_TransactionNo");
+        String totalPrice = request.getParameter("vnp_Amount");
+
+        model.addAttribute("orderId", orderInfo);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("paymentTime", paymentTime);
+        model.addAttribute("transactionId", transactionId);
+
+        return paymentStatus == 1 ? "ordersuccess" : "orderfail";
+    }
+}

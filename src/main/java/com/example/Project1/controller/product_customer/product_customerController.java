@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.Project1.entity.Cart;
 import com.example.Project1.entity.CartItem;
 import com.example.Project1.entity.CartWrapper;
-import com.example.Project1.entity.Order;
+import com.example.Project1.entity.Orders;
 import com.example.Project1.entity.OrderItem;
 import com.example.Project1.entity.OrderItemWrapper;
 import com.example.Project1.entity.Product;
@@ -120,7 +121,7 @@ public class product_customerController {
         CartWrapper cartWrapper = new CartWrapper();
         cartWrapper.setCartItems(cartItems);
         model.addAttribute("cartWrapper", cartWrapper);
-        return "shoppingcart";
+        return "user/shoppingcart";
     }
     
     @PostMapping("/paynow")
@@ -132,7 +133,7 @@ public class product_customerController {
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
         int userID = user.getUserID();
-        Order order = new Order();
+        Orders order = new Orders();
         order.setUserID(userID);
         order.setStatus("Chua thanh toan");
         order.setTotalAmount(new BigDecimal(0));
@@ -166,10 +167,10 @@ public class product_customerController {
         model.addAttribute("orderItemWrapper", orderItemWrapper);
         
         // model.addAttribute("orderItems", orderItems);
-        return "checkoutpage";
+        return "user/checkoutpage";
     }
     @GetMapping("/checkoutpage")
-    public String checkoutpage(Model model, @ModelAttribute("order") Order order, @ModelAttribute("cartWrapper") CartWrapper cartWrapper) {
+    public String checkoutpage(Model model, @ModelAttribute("order") Orders order, @ModelAttribute("cartWrapper") CartWrapper cartWrapper) {
         
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
         for(CartItem cartItem : cartWrapper.getCartItems()){
@@ -193,7 +194,7 @@ public class product_customerController {
         model.addAttribute("orderItemWrapper", orderItemWrapper);
         model.addAttribute("order", order);
 
-        return "checkoutpage";
+        return "user/checkoutpage";
        
     }
     @PostMapping("/checkout")
@@ -202,14 +203,14 @@ public class product_customerController {
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
         int userID = user.getUserID();
-        Order order = orderItemWrapper.getOrder();
+        Orders order = orderItemWrapper.getOrder();
         order.setUserID(userID);
         order.setStatus("Dang xu ly");
         order.setOrderDate(new Date(System.currentTimeMillis()));
         
         Date date = order.getOrderDate();
         orderRepository.save(order);
-        Order order1 = orderRepository.findByOrderDate(date);
+        Orders order1 = orderRepository.findByOrderDate(date);
         int orderID = order1.getOrderID();
         
         BigDecimal totalAmount = new BigDecimal(0);
@@ -224,5 +225,11 @@ public class product_customerController {
         return "redirect:/product_customer/shoppingcart";
     }
 
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam("query") String query) {
+        List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query);
+        return ResponseEntity.ok(products);
+    }
     
 }

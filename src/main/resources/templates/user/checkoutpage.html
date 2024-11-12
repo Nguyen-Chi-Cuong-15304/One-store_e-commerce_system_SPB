@@ -136,7 +136,7 @@
            
             <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label">Total Amount</label>
-                <input readonly class="form-control" th:value="${orderItemWrapper.order.totalAmount}" />
+                <input readonly class="form-control" name="amount" th:value="${orderItemWrapper.order.totalAmount}" />
  
             </div>
 
@@ -145,10 +145,24 @@
                         data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Thanh toán khi nhận hàng</button>
             </div>
 
-            <p class="text-center text-muted mt-5 mb-0">Thanh toán luôn? <a href="product_customer/payment"
+            <p class="text-center text-muted mt-5 mb-0">Thanh toán luôn? <a href="#" onclick="submitBankPayment(event)"
                                                                                    class="fw-bold text-body"><u>Thanh toán qua thẻ ngân hàng</u></a></p>
 
         </form>
+
+
+        <script>
+          function submitBankPayment(event) {
+              event.preventDefault(); // Ngăn điều hướng mặc định
+              const form = document.getElementById('purchaseForm');
+              form.action = '/submitOrder'; // Đặt action cho form
+              form.method = 'post'; // Đặt phương thức là POST
+              form.submit(); // Gửi form
+          }
+      </script>
+
+
+
     </div>
          <!-- Footer -->
   <footer class="text-center text-lg-start text-dark mt-3" style="background-color: #ECEFF1">

@@ -19,7 +19,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/").permitAll() 
                 .requestMatchers("/login","/mylogin", "/register").permitAll()  
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                //.requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/logout").permitAll()
                 .requestMatchers("/addproduct").permitAll()
                 .requestMatchers("/product/**").hasRole("customer")   
@@ -30,6 +30,9 @@ public class SecurityConfig {
                 .requestMatchers("/supplier_image/**").permitAll()
                 .requestMatchers("/product_customer/**").permitAll()
                 .requestMatchers("/checkoutpage").permitAll()
+                .requestMatchers("/userInfo/**").permitAll()
+                .requestMatchers("/navi/**").permitAll()
+                .requestMatchers("/admin/order/**").permitAll()
                        
                 .anyRequest().authenticated()                    // Mọi yêu cầu khác đều phải đăng nhập
             )
