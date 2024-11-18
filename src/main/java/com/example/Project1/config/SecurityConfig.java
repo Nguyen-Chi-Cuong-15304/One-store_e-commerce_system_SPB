@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/userInfo/**").permitAll()
                 .requestMatchers("/navi/**").permitAll()
                 .requestMatchers("/admin/order/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
                        
                 .anyRequest().authenticated()                    // Mọi yêu cầu khác đều phải đăng nhập
             )

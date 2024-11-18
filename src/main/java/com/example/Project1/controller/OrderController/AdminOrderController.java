@@ -15,9 +15,7 @@ import com.example.Project1.repository.CategoryRepository;
 import com.example.Project1.repository.OrderRepository;
 import com.example.Project1.repository.ProductRepository;
 import com.example.Project1.entity.Orders;
-
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -40,7 +38,7 @@ public class AdminOrderController {
             List<Orders> orders = orderRepository.findByMonthAndYear(currentMonth, currentYear);
             model.addAttribute("orders", orders);
             model.addAttribute("month", currentYear + "-" + currentMonth);
-            return "admin/orderManagement";
+            return "admin/orderManage";
         }
         String[] monthYear = month.split("-");
         int monthInt = Integer.parseInt(monthYear[1]);
@@ -48,7 +46,7 @@ public class AdminOrderController {
         List<Orders> orders = orderRepository.findByMonthAndYear(monthInt, year);
         model.addAttribute("orders", orders);
         model.addAttribute("month", month);
-        return "admin/orderManagement";
+        return "admin/orderManage";
     }
 
     @PostMapping("/orderManagement/findByMonth")
@@ -68,6 +66,12 @@ public class AdminOrderController {
         orderRepository.save(order);
         model.addAttribute("month", month);
         return "redirect:/admin/order/orderManagement?month=" + month;
+    }
+
+    @GetMapping("/stats")
+    public String getDashboardStats(Model model) {
+        
+        return "admin/adminDashboard";
     }
     
 }

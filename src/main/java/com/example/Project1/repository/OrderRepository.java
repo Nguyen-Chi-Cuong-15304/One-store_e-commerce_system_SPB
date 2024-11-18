@@ -17,4 +17,13 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     public List<Orders> findByUserID(int userID);
     @Query("SELECT o FROM Orders o WHERE MONTH(o.orderDate) = ?1 AND YEAR(o.orderDate) = ?2")
     public List<Orders> findByMonthAndYear(int month, int year);
+
+    @Query("SELECT COUNT(o) FROM Orders o WHERE YEAR(o.orderDate) = ?1")
+    int countTotalOrdersForYear(int currentYear);
+
+    @Query("SELECT SUM(o.totalAmount) FROM Orders o WHERE YEAR(o.orderDate) = ?1")
+    Double calculateTotalRevenueForYear(int currentYear);
+
+    @Query("SELECT o FROM Orders o ORDER BY o.orderDate DESC LIMIT 5")
+    List<Orders> getRecentOrders();
 }

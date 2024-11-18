@@ -1,6 +1,7 @@
 package com.example.Project1.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.Project1.entity.WebUser;
@@ -9,4 +10,6 @@ import com.example.Project1.entity.WebUser;
 public interface WebUserRepository extends JpaRepository<WebUser, Integer> {
         public WebUser findByEmail(String email);
 
+        @Query("SELECT COUNT(w) FROM WebUser w")
+        public int countTotalCustomers();
 }

@@ -2,14 +2,19 @@ package com.example.Project1.controller.UserInfoController;
 
 import java.util.List;
 
+import javax.naming.Binding;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import com.example.Project1.entity.Orders;
 import com.example.Project1.entity.OrderItem;
 import com.example.Project1.entity.WebUser;
+import com.example.Project1.modals.WebUserDto;
 import com.example.Project1.repository.OrderItemRepository;
 import com.example.Project1.repository.OrderRepository;
 import com.example.Project1.repository.WebUserRepository;
@@ -33,6 +38,7 @@ public class UserInfoController {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+
     @GetMapping("/userInfo")
     public String userInfo(@RequestParam("id") String id) {
         return "userInfo";
@@ -40,17 +46,28 @@ public class UserInfoController {
 
     @GetMapping("/changePassword")
     public String changePassword(Model model) {
-        return "changePassword";
+      
+        return "user/changePassword";
     }
 
     @PostMapping("/changePassword")
-    public String changePassword(@RequestBody String password) {
+    public String changePassword( Model model, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         WebUser user = webUserRepository.findByEmail(email);
-        user.setPassword(password);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        if(!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+            model.addAttribute("oldPasswordError", "Old password is incorrect");
+            return "userInfo/changePassword";
+        }
+        if(!newPassword.equals(confirmPassword)) {
+            model.addAttribute("confirmPasswordError", "New password and confirm password do not match");
+            return "userInfo/changePassword";
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         webUserRepository.save(user);
-        return "redirect:/userInfo/userInfo";
+
+        return "index";
     }
     
 

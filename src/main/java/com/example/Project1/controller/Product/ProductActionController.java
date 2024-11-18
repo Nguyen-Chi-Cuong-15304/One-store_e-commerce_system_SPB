@@ -58,7 +58,7 @@ public class ProductActionController {
     public String showProduct(Model model) {
         List<Product> products = productRepository.findAll();
         model.addAttribute("products", products);
-        return "product/show_product";
+        return "admin/adminDashboardProduct";
     }
     @GetMapping("/add")
     public String add(Model model) {
