@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .requestMatchers("/navi/**").permitAll()
                 .requestMatchers("/admin/order/**").permitAll()
                 .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/css/**", "/js/**").permitAll()
                        
                 .anyRequest().authenticated()                    // Mọi yêu cầu khác đều phải đăng nhập
             )

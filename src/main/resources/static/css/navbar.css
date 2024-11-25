@@ -1,0 +1,153 @@
+.card{
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+      transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+  padding: 14px 36px 18px 36px;
+  cursor: pointer;
+}
+
+.card:hover{
+    transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+.carousel-item {
+    transition: transform 1s ease, opacity 1s ease;
+}
+.carousel-item img{
+  max-height:device-height;
+  
+}
+.user-info {
+    display: flex;               /* Sắp xếp theo hàng ngang */
+    align-items: center;          /* Căn giữa theo chiều dọc */
+    gap: 10px;                    /* Khoảng cách giữa tên và nút logout */
+}
+
+.username {
+    font-weight: bold;            /* Làm nổi bật tên người dùng */
+    color: #2a9d8f;               /* Đổi màu chữ */
+    text-decoration: none;        /* Loại bỏ gạch chân */
+    font-size: 1.1rem;            /* Tăng kích cỡ chữ */
+}
+.success-section {
+      padding: 60px 0;
+      text-align: center;
+      background-color: #f9f9f9;
+  }
+
+  .success-section h2 {
+      font-weight: 700;
+      margin-bottom: 20px;
+  }
+
+  .success-section p.lead {
+      color: #777;
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+  }
+
+  .success-item {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #007bff;
+  }
+
+  .success-item-desc {
+      font-size: 1rem;
+      color: #333;
+  }
+
+  /* Custom color gradient */
+  .highlight {
+      color: #007bff;
+  }
+
+  /* Optional styling for "Cloud Software" text */
+  .highlight-secondary {
+      color: #21D192;
+  }
+
+  .additional-info {
+      margin-top: 50px;
+  }
+  .about-section {
+      padding: 80px 0;
+      background-color: #f9f9f9; /* Màu nền nhạt */
+  }
+
+  .about-content {
+      display: flex;
+      align-items: center;
+  }
+
+  .about-text {
+      max-width: 600px;
+  }
+
+  .about-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+  }
+
+  .about-description {
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 20px;
+  }
+
+  .btn-custom {
+      background-color: #007bff; /* Màu nền nút */
+      color: white;
+      border-radius: 30px;
+      padding: 10px 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+  }
+
+  .btn-custom:hover {
+      background-color: #0056b3; /* Màu nền khi hover */
+      color: #fff;
+  }
+
+  .about-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px; /* Làm bo tròn góc */
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Đổ bóng cho hình ảnh */
+  }
+
+  #suggestions {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      position: absolute;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+  }
+   /* CSS cho thanh tìm kiếm */
+  .suggestions-list {
+    display: flex !important;
+    visibility: visible !important;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+    width: calc(100% - 20px); /* Điều chỉnh để khớp với kích thước input */
+  }
+
+  .suggestion-item {
+      padding: 8px;
+      cursor: pointer;
+  }
+
+  .suggestion-item:hover {
+      background-color: #f0f0f0;
+  }

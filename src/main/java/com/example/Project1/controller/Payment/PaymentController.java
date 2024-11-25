@@ -1,15 +1,21 @@
 package com.example.Project1.controller.Payment;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.naming.Binding;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.example.Project1.entity.CartWrapper;
 import com.example.Project1.entity.Orders;
 import com.example.Project1.entity.OrderItem;
@@ -19,6 +25,7 @@ import com.example.Project1.repository.OrderItemRepository;
 import com.example.Project1.repository.OrderRepository;
 import com.example.Project1.repository.WebUserRepository;
 import com.example.Project1.service.VNPAYService;
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -45,6 +52,7 @@ public class PaymentController {
                             HttpServletRequest request, @ModelAttribute("orderItemWrapper") OrderItemWrapper orderItemWrapper, @ModelAttribute("cartWrapper") CartWrapper cartWrapper){
         //Lưu thông tin đơn hàng vào database
                 org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
         int userID = user.getUserID();

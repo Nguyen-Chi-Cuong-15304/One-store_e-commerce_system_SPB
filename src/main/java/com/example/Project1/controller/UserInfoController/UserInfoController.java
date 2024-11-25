@@ -58,11 +58,11 @@ public class UserInfoController {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if(!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
             model.addAttribute("oldPasswordError", "Old password is incorrect");
-            return "userInfo/changePassword";
+            return "user/changePassword";
         }
         if(!newPassword.equals(confirmPassword)) {
             model.addAttribute("confirmPasswordError", "New password and confirm password do not match");
-            return "userInfo/changePassword";
+            return "user/changePassword";
         }
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         webUserRepository.save(user);

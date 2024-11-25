@@ -1,0 +1,51 @@
+.related-products {
+    position: relative;
+    padding: 0 40px;  /* Để chừa chỗ cho nút next/prev */
+}
+
+.products-container {
+    overflow: hidden;
+}
+
+.products-list {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.product-card {
+    flex: 0 0 25%;  /* Mỗi card chiếm 25% width (hiển thị 4 card) */
+    padding: 0 10px;
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    cursor: pointer;
+    padding-bottom: 20px;
+}
+
+.prev-btn {
+    left: 0;
+}
+
+.next-btn {
+    right: 0;
+}
+
+.btn-custom {
+    background-color: #007bff; /* Màu nền nút */
+    color: white;
+    border-radius: 30px;
+    padding: 10px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+    color: #fff;
+}

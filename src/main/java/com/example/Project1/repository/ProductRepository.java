@@ -123,6 +123,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByRegionIDOrderByViewCountDesc(@Param("regionID") int regionID, Pageable pageable);
 
 
-
+    //Tìm sản phẩm cùng danh mục với sản phẩm đã cho
+    @Query(value = "SELECT p FROM Product p " +
+                   "JOIN Product_Category pc ON p.productID = pc.productID " +
+                   "JOIN Category c ON c.categoryID = pc.categoryID " +
+                   "WHERE p.productID != :productID " +
+                   "ORDER BY p.productID DESC")
+    List<Product> findRelatedProducts( @Param("productID") int productID);
 
 }

@@ -1,22 +1,27 @@
 package com.example.Project1.service;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Project1.config.VNPAYConfig;
-
+import com.example.Project1.entity.Orders;
+import com.example.Project1.repository.OrderRepository;
 import jakarta.servlet.http.HttpServletRequest;
+
 
 @Service
 public class VNPAYService {
 
-    public String createOrder(HttpServletRequest request, int amount, String orderInfor, String urlReturn){
+    @Autowired
+    private OrderRepository orderRepository;
+
+    public String createOrder(HttpServletRequest request, int amount, String orderInfor, String urlReturn) {
         //Các bạn có thể tham khảo tài liệu hướng dẫn và điều chỉnh các tham số
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";

@@ -37,7 +37,7 @@ public class SupplierActionController {
     public String show_supplier(Model model) {
         List<Supplier> suppliers = supplierRepository.findAll();
         model.addAttribute("suppliers", suppliers);
-        return "supplier/show_supplier";
+        return "admin/adminDashboardSupplier";
     }
     
     @GetMapping("/add")

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.Project1.entity.Cart;
 import com.example.Project1.entity.CartItem;
 import com.example.Project1.entity.CartWrapper;
+import com.example.Project1.entity.Evaluate_Product;
 import com.example.Project1.entity.Orders;
 import com.example.Project1.entity.OrderItem;
 import com.example.Project1.entity.OrderItemWrapper;
@@ -26,6 +27,7 @@ import com.example.Project1.entity.Product;
 import com.example.Project1.entity.WebUser;
 import com.example.Project1.repository.CartItemRepository;
 import com.example.Project1.repository.CartRepository;
+import com.example.Project1.repository.EvaluateRepository;
 import com.example.Project1.repository.OrderItemRepository;
 import com.example.Project1.repository.OrderRepository;
 import com.example.Project1.repository.ProductRepository;
@@ -58,12 +60,22 @@ public class product_customerController {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private EvaluateRepository evaluateProductRepository;
+
     @GetMapping("/product")
     public String getProduct(@RequestParam("id") int id, Model model) {
         Product product = productRepository.findById(id).get();
         product.setViewCount(product.getViewCount() + 1);
         productRepository.save(product);
         model.addAttribute("product", product);
+        int productID = product.getProductID();
+        List<Product> relatedProducts = productRepository.findRelatedProducts(productID);
+        relatedProducts.add(product);
+        model.addAttribute("relatedProducts", relatedProducts);
+
+        List<Evaluate_Product> evaluates = evaluateProductRepository.findByProductID(productID);
+        model.addAttribute("evaluates", evaluates);
         return "product";
     }
     @GetMapping("/remove")
@@ -121,6 +133,19 @@ public class product_customerController {
         CartWrapper cartWrapper = new CartWrapper();
         cartWrapper.setCartItems(cartItems);
         model.addAttribute("cartWrapper", cartWrapper);
+
+        List<Product> products = new ArrayList<Product>();
+        int c = 0;
+        for(CartItem cartItem : cartItems){
+            Product product = productRepository.findById(cartItem.getProductID()).get();
+            products.add(product);
+            c++;
+        }
+        for(int i = 0; i < c; i++){
+            products.addAll(productRepository.findRelatedProducts(products.get(i).getProductID()));
+        }
+        //products.subList(0, c).clear();
+        model.addAttribute("products", products);
         return "user/shoppingcart";
     }
     
@@ -172,27 +197,29 @@ public class product_customerController {
     @GetMapping("/checkoutpage")
     public String checkoutpage(Model model, @ModelAttribute("order") Orders order, @ModelAttribute("cartWrapper") CartWrapper cartWrapper) {
         
-        List<OrderItem> orderItems = new ArrayList<OrderItem>();
-        for(CartItem cartItem : cartWrapper.getCartItems()){
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrderID(order.getOrderID());
-            orderItem.setProductID(cartItem.getProductID());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setProductName(cartItem.getProductName());
-            orderItem.setPrice(cartItem.getPrice());
-            orderItem.setLinkImg(cartItem.getLinkImg());
-            orderItems.add(orderItem);
+        if(!model.containsAttribute("orderItemWrapper")){
+            List<OrderItem> orderItems = new ArrayList<OrderItem>();
+            for(CartItem cartItem : cartWrapper.getCartItems()){
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrderID(order.getOrderID());
+                orderItem.setProductID(cartItem.getProductID());
+                orderItem.setQuantity(cartItem.getQuantity());
+                orderItem.setProductName(cartItem.getProductName());
+                orderItem.setPrice(cartItem.getPrice());
+                orderItem.setLinkImg(cartItem.getLinkImg());
+                orderItems.add(orderItem);
+            }
+            BigDecimal totalAmount = new BigDecimal(0);
+            for(OrderItem orderItem : orderItems){
+                totalAmount = totalAmount.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
+            }
+            order.setTotalAmount(totalAmount);
+            OrderItemWrapper orderItemWrapper = new OrderItemWrapper();
+            orderItemWrapper.setOrderItems(orderItems);
+            orderItemWrapper.setOrder(order);
+            model.addAttribute("orderItemWrapper", orderItemWrapper);
+            model.addAttribute("order", order);
         }
-        BigDecimal totalAmount = new BigDecimal(0);
-        for(OrderItem orderItem : orderItems){
-            totalAmount = totalAmount.add(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
-        }
-        order.setTotalAmount(totalAmount);
-        OrderItemWrapper orderItemWrapper = new OrderItemWrapper();
-        orderItemWrapper.setOrderItems(orderItems);
-        orderItemWrapper.setOrder(order);
-        model.addAttribute("orderItemWrapper", orderItemWrapper);
-        model.addAttribute("order", order);
 
         return "user/checkoutpage";
        
@@ -230,6 +257,15 @@ public class product_customerController {
     public ResponseEntity<List<Product>> searchProducts(@RequestParam("query") String query) {
         List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query);
         return ResponseEntity.ok(products);
+    }
+
+    @PostMapping("/evaluate")
+    public String evaluate(@RequestParam("productID") int id, @RequestParam("evaluateContent") String evaluateContent, Model model) {
+        Evaluate_Product evaluate = new Evaluate_Product();
+        evaluate.setProductID(id);
+        evaluate.setEvaluateContent(evaluateContent);
+        evaluateProductRepository.save(evaluate);
+        return "redirect:/product_customer/product?id=" + id;
     }
     
 }

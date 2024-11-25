@@ -64,52 +64,25 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard</h1>
+                    <a href="/supplier/add" class="btn btn-primary">Add supplier</a>
                 </div>
                 <div class="container">
-                        <h2>Danh sách các đơn hàng</h2>
-                        <form th:action="@{/admin/order/orderManagement/findByMonth}" method="post">
-                            <label for="month">Chọn tháng:</label>
-                            <input type="month" id="month" name="month" th:value="${month}">
-                            <button type="submit">Tìm kiếm</button>
-                        </form>
-                        <br>
-                        <div class="card">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Mã đơn hàng</th>
-                                        <th scope="col">Ngày đặt hàng</th>
-                                        <th scope="col">Tổng tiền</th>
-                                        <th scope="col">Trạng thái</th>
-                                        <th scope="col">Cập nhật trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="order : ${orders}">
-                                        <td th:text="${order.orderID}"></td>
-                                        <td th:text="${order.orderDate}"></td>
-                                        <td th:text="${order.totalAmount}"></td>
-                                        <td th:text="${order.status}"></td>
-                                        <td>
-                                            <form th:action="@{/admin/order/updateStatus(id=${order.orderID})}" method="post">
-                                                <input type="hidden" th:name="orderID" th:value="${order.orderID}">
-                                                <input type="hidden" th:name="month" th:value="${month}">
-                                                <select name="status">
-                                                    <option value="Đã xác nhận">Đã xác nhận</option>
-                                                    <option value="Đang giao hàng">Đang giao hàng</option>
-                                                    <option value="Đã giao hàng">Đã giao hàng</option>
-                                                    <option value="Đã thanh toán">Đã thanh toán</option>
-                                                    
-                                                </select>
-                                                <button type="submit">Cập nhật</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <!-- Your dashboard content goes here -->
+                    <div class="row">
+                        <div class="col-md-4" th:each="supplier: ${suppliers}">
+                            <div class="card">
+                                <img th:src="@{'/supplier_image/'+ ${supplier.linkImg}}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h5 class="card-title"><b><span th:text="${supplier.supplierName}"></span></b></h5>
+                                  <p class="card-text"><b><span>Address: </span></b><span th:text="${supplier.address}"></span></p>
+                                  <a th:href="@{/supplier/edit(id=${supplier.supplierID})}" class="btn btn-primary btn-sm">Edit</a>
+                                  <a th:href="@{/supplier/delete(id=${supplier.supplierID})}" class="btn btn-danger btn-sm" onclick="return confirm('May chac chua?')">Delete</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Additional content -->
+                </div>
             </main>
         </div>
     </div>

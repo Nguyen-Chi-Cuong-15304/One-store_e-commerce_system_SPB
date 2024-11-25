@@ -1,0 +1,111 @@
+/* CSS for Sidebar and Layout Adjustments */
+.container-fluid {
+    padding: 0;
+}
+
+/* Breadcrumb list */
+.breadcrumb {
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+/* Breadcrumb links */
+.breadcrumb-item a {
+    color: #ffffff; /* Màu trắng cho liên kết */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #f8f9fa; /* Màu sáng hơn khi hover */
+    text-decoration: underline; /* Gạch chân khi hover */
+}
+
+/* Active breadcrumb item */
+.breadcrumb-item.active span {
+    color: #f0f0f0; /* Màu xám nhạt cho mục đang active */
+    font-weight: bold;
+}
+.sidebar {
+    padding: 15px;
+    border-right: 1px solid #ccc; /* Optional: border to separate sidebar */
+
+}
+
+.col-md-9 {
+    padding: 15px;
+}
+
+/* Styling for Product Cards */
+.card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Pagination Styling */
+.pagination {
+    margin-top: 20px;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        height: auto;
+        padding-bottom: 20px;
+    }
+
+    .col-md-3 {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    .col-md-9 {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+}
+
+
+/* Breadcrumb list */
+.breadcrumb {
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+/* Breadcrumb links */
+.breadcrumb-item a {
+    color: #ffffff; /* Màu trắng cho liên kết */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #f8f9fa; /* Màu sáng hơn khi hover */
+    text-decoration: underline; /* Gạch chân khi hover */
+}
+
+/* Active breadcrumb item */
+.breadcrumb-item.active span {
+    color: #f0f0f0; /* Màu xám nhạt cho mục đang active */
+    font-weight: bold;
+}

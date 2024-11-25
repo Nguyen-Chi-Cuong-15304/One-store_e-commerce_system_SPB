@@ -120,23 +120,26 @@
             <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label">User Name</label>
                 <input class="form-control" th:field="${orderItemWrapper.order.name}" required />
-                
+                <label th:if="${nameError}" th:text="${nameError}" style="color: red;">Name Error</label>
+
             </div>
 
 
             <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label">Address</label>
-                <input class="form-control" th:field="${orderItemWrapper.order.address}"  />
+                <input class="form-control" th:field="${orderItemWrapper.order.address}" required />
+                <label th:if="${addressError}" th:text="${addressError}" style="color: red;">Address error</label>
             </div>
             
             <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label">phoneNumber</label>
-                <input class="form-control" th:field="${orderItemWrapper.order.phone}" />
+                <input class="form-control" th:field="${orderItemWrapper.order.phone}" required />
+                <label th:if="${phoneError}" th:text="${phoneError}" style="color: #F44336;">Phone error</label>
             </div>
            
             <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label">Total Amount</label>
-                <input readonly class="form-control" name="amount" th:value="${orderItemWrapper.order.totalAmount}" />
+                <input readonly class="form-control" name="amount" th:value="${orderItemWrapper.order.totalAmount}"/>
  
             </div>
 
@@ -152,13 +155,48 @@
 
 
         <script>
-          function submitBankPayment(event) {
-              event.preventDefault(); // Ngăn điều hướng mặc định
-              const form = document.getElementById('purchaseForm');
-              form.action = '/submitOrder'; // Đặt action cho form
-              form.method = 'post'; // Đặt phương thức là POST
-              form.submit(); // Gửi form
-          }
+function submitBankPayment(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('purchaseForm');
+    
+    // Kiểm tra null trước khi truy cập value
+    const nameElement = form.querySelector('input[name="order.name"]');
+    const addressElement = form.querySelector('input[name="order.address"]');
+    const phoneElement = form.querySelector('input[name="order.phone"]');
+    
+    // Kiểm tra từng element có tồn tại không
+    if (!nameElement || !addressElement || !phoneElement) {
+        alert("Không thể tìm thấy các trường form cần thiết");
+        return;
+    }
+    
+    const userName = nameElement.value.trim();
+    const address = addressElement.value.trim();
+    const phoneNumber = phoneElement.value.trim();
+    
+    let errorMessages = [];
+    
+    if (!userName) {
+        errorMessages.push("User Name is required");
+    }
+    if (!address) {
+        errorMessages.push("Address is required"); 
+    }
+    if (!phoneNumber) {
+        errorMessages.push("Phone number is required");
+    }
+
+    if (errorMessages.length > 0) {
+        alert(errorMessages.join("\n"));
+        return;
+    }
+
+    // Tiếp tục submit form như bình thường
+    form.action = '/submitOrder';
+    form.method = 'post';
+    form.submit();
+}
       </script>
 
 
