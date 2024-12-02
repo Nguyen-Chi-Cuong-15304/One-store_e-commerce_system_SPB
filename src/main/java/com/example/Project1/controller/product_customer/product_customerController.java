@@ -150,10 +150,35 @@ public class product_customerController {
     }
     
     @PostMapping("/paynow")
-    public String postMethodName(Model model, @ModelAttribute("cartWrapper") CartWrapper cartWrapper) {
+    public String postMethodName(Model model, @ModelAttribute("cartWrapper") CartWrapper cartWrapper, RedirectAttributes redirectAttributes) {
         // for(CartItem cartItem : cartItems){
         //     cartItemRepository.save(cartItem);
         // }
+        StringBuilder error = new StringBuilder("Mot so san pham khong du hang: ");
+        boolean outOfStock = false;
+        for(CartItem cartItem : cartWrapper.getCartItems()){
+            Product product = productRepository.findById(cartItem.getProductID()).orElse(null);
+            if(product == null){
+                outOfStock = true;
+                error.append("productID: " + cartItem.getProductID() + " khong ton tai.\n ");
+            }
+            else if(cartItem.getQuantity() > product.getStockQuantity()){
+                outOfStock = true;
+                error.append(product.getProductName())
+                    .append(" chi con ")
+                    .append(product.getStockQuantity())
+                    .append(" san pham.\n")
+                    .append("So luong ban dat la: ")
+                    .append(cartItem.getQuantity())
+                    .append("\n");
+            }
+        }
+        if(outOfStock){
+            
+            redirectAttributes.addFlashAttribute("error", error.toString());
+            return "redirect:/product_customer/shoppingcart";
+        }
+
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
@@ -187,6 +212,9 @@ public class product_customerController {
             orderItem.setPrice(cartItem.getPrice());
             orderItem.setLinkImg(cartItem.getLinkImg());
             orderItems.add(orderItem);
+            Product product = productRepository.findById(cartItem.getProductID()).get();
+            product.setStockQuantity(product.getStockQuantity() - cartItem.getQuantity());
+            productRepository.save(product);
         }
         orderItemWrapper.setOrderItems(orderItems);
         model.addAttribute("orderItemWrapper", orderItemWrapper);

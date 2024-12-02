@@ -214,7 +214,12 @@
               </div>
           </aside>
       </div>
-        </form>
+      </form>
+
+      <div th:if="${error}" class="alert alert-danger" role="alert">
+        <p th:utext="${error}"></p>
+      </div>
+    
         
         <div class="related-products">
           <h2 class="title">Sản phẩm liên quan</h2>
@@ -370,30 +375,30 @@
 
 
 
-let currentPosition = 0;
-const productsPerView = 4;
+        let currentPosition = 0;
+        const productsPerView = 4;
 
-function showNextProducts() {
-    const productsList = document.querySelector('.products-list');
-    const totalProducts = productsList.children.length;
-    const maxPosition = totalProducts - productsPerView;
-    
-    if (currentPosition < maxPosition) {
-        currentPosition++;
-        updatePosition();
-    }
-}
+        function showNextProducts() {
+            const productsList = document.querySelector('.products-list');
+            const totalProducts = productsList.children.length;
+            const maxPosition = totalProducts - productsPerView;
+            
+            if (currentPosition < maxPosition) {
+                currentPosition++;
+                updatePosition();
+            }
+        }
 
-function showPreviousProducts() {
-    if (currentPosition > 0) {
-        currentPosition--;
-        updatePosition();
-    }
-}
+        function showPreviousProducts() {
+            if (currentPosition > 0) {
+                currentPosition--;
+                updatePosition();
+            }
+        }
 
-function updatePosition() {
-    const productsList = document.querySelector('.products-list');
-    productsList.style.transform = `translateX(-${currentPosition * 25}%)`;
-}
+        function updatePosition() {
+            const productsList = document.querySelector('.products-list');
+            productsList.style.transform = `translateX(-${currentPosition * 25}%)`;
+        }
 </script>
 </html>
