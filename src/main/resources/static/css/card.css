@@ -1,0 +1,13 @@
+.card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+    transition: 0.3s;
+}
+
+.card-img-top {
+  width: 100%; /* Chiều rộng luôn bằng thẻ card */
+  height: 100%; /* Để hình ảnh tự động điều chỉnh theo tỷ lệ */
+  aspect-ratio: 4 / 3; /* Đặt tỷ lệ khung hình (tỷ lệ 4:3 ở đây là một ví dụ) */
+  object-fit: cover; /* Giữ tỷ lệ và cắt các phần thừa */
+  border-radius: 25px; /* Bo góc nhẹ, tùy chỉnh */
+}

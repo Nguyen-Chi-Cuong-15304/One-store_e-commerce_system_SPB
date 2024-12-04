@@ -70,6 +70,15 @@
                         <form th:action="@{/admin/order/orderManagement/findByMonth}" method="post">
                             <label for="month">Chọn tháng:</label>
                             <input type="month" id="month" name="month" th:value="${month}">
+                            <label for="status">Chọn trạng thái:</label>
+                            <select name="status">
+                                <option value="All" th:selected="${status == 'All'}">Tất cả</option>
+                                <option value="Chờ xác nhận" th:selected="${status == 'Chờ xác nhận'}">Chờ xác nhận</option>
+                                <option value="Đã xác nhận" th:selected="${status =='Đã xác nhận'}">Đã xác nhận</option>
+                                <option value="Đang giao hàng" th:selected="${status == 'Đang giao hàng'}">Đang giao hàng</option>
+                                <option value="Đã giao hàng" th:selected = "${status == 'Đã giao hàng'}">Đã giao hàng</option>
+                                <option value="Đã thanh toán" th:selected = "${status == 'Đã thanh toán'}">Đã thanh toán</option>
+                            </select>
                             <button type="submit">Tìm kiếm</button>
                         </form>
                         <br>
@@ -94,7 +103,8 @@
                                             <form th:action="@{/admin/order/updateStatus(id=${order.orderID})}" method="post">
                                                 <input type="hidden" th:name="orderID" th:value="${order.orderID}">
                                                 <input type="hidden" th:name="month" th:value="${month}">
-                                                <select name="status">
+                                                <input type="hidden" th:name="curr_status" th:value="${status}">
+                                                <select name="status_order">
                                                     <option value="Đã xác nhận">Đã xác nhận</option>
                                                     <option value="Đang giao hàng">Đang giao hàng</option>
                                                     <option value="Đã giao hàng">Đã giao hàng</option>

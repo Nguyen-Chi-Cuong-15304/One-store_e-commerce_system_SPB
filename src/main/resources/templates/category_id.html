@@ -9,15 +9,11 @@
   <link rel="stylesheet" href="/css/sliderbar.css">
   <link rel="stylesheet" href="/css/suggestion.css">
   <link rel="stylesheet" href="/css/navbar">
+  <link rel="stylesheet" href="/css/card.css">
   <title>Category Page</title>
     
     <style>
         
-        .card:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transform: translateY(-5px);
-            transition: 0.3s;
-        }
         .user-info {
           display: flex;               /* Sắp xếp theo hàng ngang */
           align-items: center;          /* Căn giữa theo chiều dọc */
@@ -182,7 +178,7 @@
                             <h5 class="card-title" th:text="${product.productName}"></h5>
                             <p class="card-text" th:text="${product.description}"></p>
                             <p class="text-danger"><b><span  th:text="'VND '+${product.price}"></span></b></p>
-                            <a href="#" class="btn btn-primary">Chi tiết</a>
+                            <a th:href="@{/product_customer/product(id=${product.productID})}" class="btn btn-primary">Chi tiết</a>
                         </div>
                     </div>
                 </div>

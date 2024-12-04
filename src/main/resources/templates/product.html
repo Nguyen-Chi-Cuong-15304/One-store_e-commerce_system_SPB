@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="/css/relateProduct.css">
         <link rel="stylesheet" href="/css/suggestion.css">
         <link rel="stylesheet" href="/css/navbar">
+        <link rel="stylesheet" href="/css/card.css">
         <title>Document</title>
         <style>
           .card{
@@ -123,7 +124,7 @@
 
     <div class="container pt-5">
         <div class="row pt-5">
-            <h3 style="font-family: Georgia, 'Times New Roman', Times, serif;">ProductName</h3>
+            <h3 style="font-family: Georgia, 'Times New Roman', Times, serif;"><b><span th:text="${product.productName}"></span></b></h3>
         </div>
 
         <div class="row">
@@ -158,8 +159,9 @@
                 <p class="lead">Mô tả ngắn về sản phẩm, tính năng nổi bật.</p>
                 <h3 class="text-danger"><span th:text="${product.price}"></span></h3>
                 <p><strong>Tình trạng:</strong> Còn hàng</p>
+                <p><strong>Số lượng còn trong kho: </strong><span th:text="${product.stockQuantity}"></span></p>
                 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="sizeSelect" class="form-label">Chọn kích thước</label>
                     <select class="form-select" id="sizeSelect">
                         <option selected>Chọn kích thước</option>
@@ -167,12 +169,32 @@
                         <option value="2">M</option>
                         <option value="3">L</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="mb-3">
                     <label for="quantityInput" class="form-label">Số lượng</label>
                     <input type="number" id="quantityInput" class="form-control" value="1" min="1" max="10">
                 </div>
-                <a th:href="@{/product_customer/addtocart(id=${product.productID})}" class="btn btn-primary btn-lg me-3">Thêm vào giỏ hàng</a>
+                <a th:href="@{/product_customer/addtocart(id=${product.productID})}" class="btn btn-primary btn-lg me-3" id="add-to-cart-link" th:attr="data-product-id=${product.productID}">Thêm vào giỏ hàng</a>
+                
+                <script>
+                    document.getElementById('add-to-cart-link').addEventListener('click', function (event) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+                    // Lấy giá trị của input số lượng
+                    const quantity = document.getElementById('quantityInput').value;
+
+                    // Lấy ID sản phẩm từ thuộc tính data-product-id của thẻ <a>
+                    const productId = this.getAttribute('data-product-id');
+
+                    // Xây dựng URL động
+                    const url = `/product_customer/addtocart?id=${productId}&quantity=${quantity}`;
+
+                    // Chuyển hướng đến URL
+                    window.location.href = url;
+});
+
+                </script>
+                
                 <button class="btn btn-outline-secondary btn-lg">Mua ngay</button>
                     <!-- Hiển thị thông báo thành công -->
                 <div th:if="${message1}" class="alert alert-success" role="alert">
@@ -220,9 +242,9 @@
                         }
                     </style>
                     <div class="tab-pane fade p-3 reviews" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                        <h4>Đánh giá của khách hàng</h4>
+                        <h4>Những đánh giá của người dùng</h4>
                         <div th:each="userEvaluate : ${evaluates}">
-                            <p><span th:text="${userEvaluate.evaluateContent}"></span></p>
+                            <p style="color: #7c4dff;"><span> --- </span><span th:text="${userEvaluate.evaluateContent}"></span></p>
                         </div>
                     </div>
                     <div class="tab-pane fade p-3" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
@@ -251,11 +273,14 @@
                 <div class="products-list">
                     <!-- Hiển thị tất cả sản phẩm -->
                     <div th:each="product : ${relatedProducts}" class="product-card mb-1 pb-2">
-                        <img th:src="@{'/product_image/'+ ${product.linkImg}}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                        <h5 class="card-title"><b><span th:text="${product.productName}"></span></b></h5>
-                        <p class="card-text"><b><span>Giá: </span></b><span th:text="${product.price}"></span></p>
-                        <a th:href="@{/product_customer/product(id=${product.productID})}" class="btn-custom">Xem ngay</a>
+                        <div class="card h-100">
+                            <img th:src="@{'/product_image/'+ ${product.linkImg}}" class="card-img-top" alt="Product 1">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${product.productName}"></h5>
+                                <p class="card-text" th:text="${product.description}"></p>
+                                <p class="text-danger"><b><span  th:text="'VND '+${product.price}"></span></b></p>
+                                <a th:href="@{/product_customer/product(id=${product.productID})}" class="btn btn-primary">Chi tiết</a>
+                            </div>
                         </div>
                     </div>
                 </div>

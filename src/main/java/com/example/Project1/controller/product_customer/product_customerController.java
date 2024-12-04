@@ -85,7 +85,7 @@ public class product_customerController {
         return "redirect:/product_customer/shoppingcart";
     }
     @GetMapping("/addtocart")
-    public String addtocart(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes) {
+    public String addtocart(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes, @RequestParam("quantity") int quantity) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
@@ -102,14 +102,14 @@ public class product_customerController {
             cartItem = new CartItem();
             cartItem.setCartID(cartID);
             cartItem.setProductID(id);
-            cartItem.setQuantity(1);
+            cartItem.setQuantity(quantity);
             cartItemRepository.save(cartItem);
             redirectAttributes.addFlashAttribute("message1", "Add to cart successfully");
         }
         else{
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItemRepository.save(cartItem);
-            redirectAttributes.addFlashAttribute("message2", "San pham da co trong gio hang, ban vua them 1 san pham moi");
+            redirectAttributes.addFlashAttribute("message2", "Vua them " + quantity + " san pham " + productRepository.findById(id).get().getProductName() + " vao gio hang");
         }
         return "redirect:/product_customer/product?id=" + id;
     }
@@ -260,7 +260,7 @@ public class product_customerController {
         int userID = user.getUserID();
         Orders order = orderItemWrapper.getOrder();
         order.setUserID(userID);
-        order.setStatus("Dang xu ly");
+        order.setStatus("Chờ xác nhận");
         order.setOrderDate(new Date(System.currentTimeMillis()));
         
         Date date = order.getOrderDate();

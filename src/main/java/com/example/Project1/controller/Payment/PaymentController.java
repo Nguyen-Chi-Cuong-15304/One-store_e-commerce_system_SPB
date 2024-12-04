@@ -82,7 +82,7 @@ public class PaymentController {
          if(paymentStatus == 1){
             Orders order = orderItemWrapper.getOrder();
             order.setUserID(userID);
-            order.setStatus("Da thanh toan");
+            order.setStatus("Đã thanh toán");
             order.setOrderDate(new Date(System.currentTimeMillis()));
             order.setTotalAmount(totalAmount);
             orderRepository.save(order);
