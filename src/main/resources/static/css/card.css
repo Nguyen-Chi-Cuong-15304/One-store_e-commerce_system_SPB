@@ -6,8 +6,8 @@
 
 .card-img-top {
   width: 100%; /* Chiều rộng luôn bằng thẻ card */
-  height: 100%; /* Để hình ảnh tự động điều chỉnh theo tỷ lệ */
-  aspect-ratio: 4 / 3; /* Đặt tỷ lệ khung hình (tỷ lệ 4:3 ở đây là một ví dụ) */
+  height: auto; /* Để hình ảnh tự động điều chỉnh theo tỷ lệ */
+  aspect-ratio: 4 / 3; /*Đặt tỷ lệ khung hình (tỷ lệ 4:3 ở đây là một ví dụ)*/
   object-fit: cover; /* Giữ tỷ lệ và cắt các phần thừa */
-  border-radius: 25px; /* Bo góc nhẹ, tùy chỉnh */
+  border-radius: 5px; /* Bo góc nhẹ, tùy chỉnh */
 }

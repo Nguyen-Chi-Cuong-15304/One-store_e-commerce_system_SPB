@@ -109,3 +109,14 @@
     color: #f0f0f0; /* Màu xám nhạt cho mục đang active */
     font-weight: bold;
 }
+
+.nav-link.choosen {
+    font-weight: bold;
+    color: forestgreen;
+    background-color: white;
+    border-radius: 5px; /* Góc bo */
+}
+.nav-link:hover {
+    color: forestgreen;
+    background-color: #f8f9fa;
+}

@@ -119,77 +119,81 @@
   </nav>
 
 <!-- Breadcrumb Navigation -->
-<nav aria-label="breadcrumb" class="mt-5 pt-4" style="background-color: #21D192;">
-    <div class="container">
-        <ol class="breadcrumb pb-2">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="prd.html">Category</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><span>Product</span></li>
-        </ol>
-    </div>
+<nav aria-label="breadcrumb" class="mt-5 pt-3" style="background-color: #21D192;">
+  <div class="container justify-content-center d-flex">
+      <p style="font-size: large; color: whitesmoke; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"><strong>DANH SÁCH SẢN PHẨM TÌM KIẾM THEO LOẠI</strong></p>
+  </div>
 </nav>
 
 <!-- Category Page -->
 <div class="container-fluid mt-3">
-    <div class="row">
-        <!-- Filter Sidebar -->
-        <div class="col-md-3 col-lg-2 d-md-block bg-info sidebar" style="background-color:antiquewhite;">
-          <h5>Bộ lọc sản phẩm</h5>
+  <div class="row">
+      <!-- Nút Toggle Sidebar cho màn hình nhỏ -->
+      <button class="btn btn-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+          ☰ Bộ lọc sản phẩm
+      </button>
 
-          <!-- Category Filter -->
-          <div class="position-sticky">
-            <h6>Danh muc san pham</h6>
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link active" href="/navi/categoryDefault">Tất cả</a>
-              </li>
-              <li class=" nav-item" th:each="category: ${categories}">
-                <a th:href="@{/navi/showChoosenCategory/{id}(id=${category.categoryID})}" th:text="${category.categoryName}" class="nav-link active"></a>
-              </li>
-            </ul>
-
+      <!-- Sidebar (Offcanvas) -->
+      <div class="offcanvas-md offcanvas-start bg-info d-block d-md-block col-md-2" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+          <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="sidebarLabel">Bộ lọc sản phẩm</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
+          <div class="offcanvas-body">
+              <!-- Category Filter -->
+              <div class="d-flex flex-column">
+                <div class="mb-3">
+                    <h6>Danh mục sản phẩm</h6>
+                    <ul class="list-unstyled">
+                        <li class="nav-item mb-2 mx-2">
+                            <a th:href="@{/navi/categoryDefault}" 
+                              class="list-group-item list-group-item-action nav-link"> Tất cả</a>
+                        </li>
+                        <li class="nav-item mb-2 mx-2" th:each="category: ${categories}">
+                            <a th:href="@{/navi/showChoosenCategory/{id}(id=${category.categoryID})}" 
+                              th:text="${category.categoryName}" 
+                              th:classappend="${category.categoryID == currentID ? 'choosen' : ''}"
+                              class="nav-link list-group-item list-group-item-action"></a>
+                        </li>
+                    </ul>
+                </div>
 
-
-          <!-- Sort Filter -->
-          <div class="mb-4">
-            <form method="get" th:action="@{/navi/categoryDefault}" id="sortForm">
-                  
-              <label for="sortOption">Sắp xếp theo</label>
-              <select id="sortOption" name="sortOption" class="form-select" onchange="document.getElementById('sortForm').submit()">
-                <option value="popular" th:selected="${sortOption == 'popular'}">Được xem nhiều nhất</option>
-                      
-                <option value="newest" th:selected="${sortOption == 'newest'}">Mới nhất</option>
-                <option value="priceAsc" th:selected="${sortOption=='priceAsc'}">Giá: Thấp đến cao</option>
-                <option value="priceDesc"th:selected="${sortOption=='priceDesc'}">Giá: Cao đến thấp</option>
-              </select>
-          </form>
+                <!-- Sort Filter -->
+                <div class="mb-3">
+                    <form method="get" th:action="@{/navi/categoryDefault}" id="sortForm">
+                        <label for="sortOption" class="form-label">Sắp xếp theo</label>
+                        <select id="sortOption" name="sortOption" class="form-select" onchange="document.getElementById('sortForm').submit()">
+                            <option value="popular" th:selected="${sortOption == 'popular'}">Được xem nhiều nhất</option>
+                            <option value="newest" th:selected="${sortOption == 'newest'}">Mới nhất</option>
+                            <option value="priceAsc" th:selected="${sortOption == 'priceAsc'}">Giá: Thấp đến cao</option>
+                            <option value="priceDesc" th:selected="${sortOption == 'priceDesc'}">Giá: Cao đến thấp</option>
+                        </select>
+                    </form>
+                </div>
+              </div>
           </div>
       </div>
 
-        <!-- Product List -->
-        <div class="col-md-9" style="background-color: aquamarine;">
-            <div class="row">
-                <!-- Product Card 1 -->
-                <div class="col-md-4 mb-4 col-lg-3 col-sm-6" th:each="product:${products}">
-                    <div class="card h-100">
-                        <img th:src="@{'/product_image/'+ ${product.linkImg}}" class="card-img-top" alt="Product 1">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${product.productName}"></h5>
-                            <p class="card-text" th:text="${product.description}"></p>
-                            <p class="text-danger"><b><span  th:text="'VND '+${product.price}"></span></b></p>
-                            <a th:href="@{/product_customer/product(id=${product.productID})}" class="btn btn-primary">Chi tiết</a>
-                        </div>
-                    </div>
-                </div>
+      <!-- Product List -->
+      <div class="col-md-10" style="background-color: aquamarine;">
+          <div class="row">
+              <!-- Product Card 1 -->
+              <div class="col-md-4 mb-3 col-lg-3 col-sm-6" th:each="product:${products}">
+                  <div class="card h-100">
+                      <img th:src="@{'/product_image/'+ ${product.linkImg}}" class="card-img-top" alt="Product 1">
+                      <div class="card-body">
+                          <h5 class="card-title" th:text="${product.productName}"></h5>
+                          <p class="card-text" th:text="${product.description}"></p>
+                          <p class="text-danger"><b><span  th:text="'VND '+${product.price}"></span></b></p>
+                          <a th:href="@{/product_customer/product(id=${product.productID})}" class="btn btn-primary">Chi tiết</a>
+                      </div>
+                  </div>
+              </div>
+              <!-- More product cards here... -->
+          </div>
 
-
-
-                <!-- More product cards here... -->
-            </div>
-
-            <!-- Pagination -->
-            <nav aria-label="Page navigation">
+          <!-- Pagination -->
+          <nav aria-label="Page navigation">
               <ul class="pagination justify-content-center">
                   <!-- Previous Button -->
                   <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
@@ -200,7 +204,7 @@
                   <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
                       th:classappend="${pageNumber == currentPage} ? 'active'">
                       <a class="page-link" th:href="@{${currentURI}(id=${currentID}, page=${pageNumber}, sortOption=${param.sortOption})}"
-                         th:text="${pageNumber + 1}"></a>
+                          th:text="${pageNumber + 1}"></a>
                   </li>
                   
                   <!-- Next Button -->
@@ -209,8 +213,8 @@
                   </li>
               </ul>
           </nav>
-        </div>
-    </div>
+      </div>
+  </div>
 </div>
      <!-- Footer -->
      <footer class="text-center text-lg-start text-dark mt-3" style="background-color: #ECEFF1">
@@ -290,104 +294,7 @@
         <!-- Footer -->
 
 <!-- Bootstrap JS -->
-<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('productSearch');
-            const suggestionsContainer = document.getElementById('suggestions');
-
-            // Add error handling for missing elements
-            if (!searchInput || !suggestionsContainer) {
-                console.error('Required DOM elements not found');
-                return;
-            }
-
-            searchInput.addEventListener('input', function() {
-                const query = searchInput.value.trim();
-
-                if (query.length > 0) {
-                    fetch(`/product_customer/search?query=${encodeURIComponent(query)}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log('Data received:', data);
-                            // Ensure data is an array
-                            const products = Array.isArray(data) ? data : [data];
-                            
-                            suggestionsContainer.style.display = 'block';
-                            suggestionsContainer.innerHTML = '';
-
-                            if (products.length > 0) {
-                                const list = document.createElement('ul');
-                                list.className = 'suggestions-list';
-
-                                products.forEach(product => {
-                                    // Validate product object has required properties
-                                    if (!product.productID || !product.productName) {
-                                        console.warn('Invalid product data:', product);
-                                        return;
-                                    }
-
-                                    const listItem = document.createElement('li');
-                                    // Add price and other relevant information
-                                    listItem.innerHTML = `
-                                        <span class="product-name">${product.productName}</span>
-                                        ${product.price ? `<span class="product-price">${product.price.toFixed(2)} đ</span>` : ''}
-                                    `;
-                                    listItem.className = 'suggestion-item';
-
-                                    listItem.addEventListener('click', () => {
-                                        window.location.href = `/product/${product.productID}`;
-                                    });
-
-                                    list.appendChild(listItem);
-                                    console.log('add Product:', product);
-                                });
-
-                                suggestionsContainer.appendChild(list);
-                                console.log('add list successful:', list);
-                            } else {
-                                const noResults = document.createElement('div');
-                                noResults.textContent = 'Không tìm thấy sản phẩm nào';
-                                noResults.className = 'no-results';
-                                suggestionsContainer.appendChild(noResults);
-                            }
-                            
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-                            suggestionsContainer.innerHTML = `
-                                <div class="error-message">
-                                    Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại sau.
-                                </div>
-                            `;
-                        });
-                } else {
-                    suggestionsContainer.style.display = 'none';
-                    suggestionsContainer.innerHTML = '';
-                }
-            });
-
-            // Add debouncing to prevent too many API calls
-            let searchTimeout;
-            searchInput.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    // Trigger search here
-                }, 300);
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!suggestionsContainer.contains(e.target) && e.target !== searchInput) {
-                    suggestionsContainer.innerHTML = '';
-                    suggestionsContainer.style.display = 'none';
-                }
-            });
-        });
-</script>
+<script src="/js/navbar.js"></script>
 
 </body>
 </html>

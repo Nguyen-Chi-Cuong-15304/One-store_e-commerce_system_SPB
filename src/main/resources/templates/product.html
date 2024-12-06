@@ -29,8 +29,6 @@
           .carousel-item {
               transition: transform 1s ease, opacity 1s ease;
           }
-
-
         </style>
     </head>
 <body>
@@ -237,9 +235,13 @@
                     </div>
                     <style>
                         .reviews {
-                            max-height: 300px;
-                            overflow-y: auto;
+                            max-height: 150px; /* Chiều cao tối đa của container */
+                            overflow-y: auto;  /* Hiển thị thanh cuộn khi nội dung vượt quá */
+                            padding-right: 10px; /* Thêm khoảng cách để tránh chồng lên thanh cuộn */
+                            border: 1px solid #ddd; /* Thêm viền (tùy chọn) */
+                            border-radius: 5px; /* Bo góc (tùy chọn) */
                         }
+
                     </style>
                     <div class="tab-pane fade p-3 reviews" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                         <h4>Những đánh giá của người dùng</h4>
@@ -249,11 +251,22 @@
                     </div>
                     <div class="tab-pane fade p-3" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
                         <h4>Them danh gia vao day</h4>
-                        <form th:action="@{/product_customer/evaluate}" method="post">
+                        <form th:action="@{/product_customer/evaluate}" method="post" id="evaluateForm">
                             <input type="hidden" name="productID" th:value="${product.productID}">
                             <textarea class="form-control" id="evaluateOfUser" rows="6" name="evaluateContent" placeholder="Nhập đánh giá của bạn"></textarea>
-                            <button type="submit">Gui</button>
+                            <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
                         </form>
+
+                        <script>
+                            document.getElementById('evaluateForm').addEventListener('submit', function(event) {
+                                const textarea = document.getElementById('evaluateOfUser');
+                                if (!textarea.value.trim()) {
+                                    event.preventDefault(); // Ngăn không cho gửi form
+                                    alert('Vui lòng nhập nội dung đánh giá trước khi gửi!');
+                                }
+                            });
+                        </script>
+
                     </div>
                 </div>
             </div>
@@ -370,104 +383,9 @@
         <!-- Copyright -->
     </footer>
 
+<script src="/js/navbar.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('productSearch');
-    const suggestionsContainer = document.getElementById('suggestions');
-
-    // Add error handling for missing elements
-    if (!searchInput || !suggestionsContainer) {
-        console.error('Required DOM elements not found');
-        return;
-    }
-
-    searchInput.addEventListener('input', function() {
-        const query = searchInput.value.trim();
-
-        if (query.length > 0) {
-            fetch(`/product_customer/search?query=${encodeURIComponent(query)}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Data received:', data);
-                    // Ensure data is an array
-                    const products = Array.isArray(data) ? data : [data];
-                    
-                    suggestionsContainer.style.display = 'block';
-                    suggestionsContainer.innerHTML = '';
-
-                    if (products.length > 0) {
-                        const list = document.createElement('ul');
-                        list.className = 'suggestions-list';
-
-                        products.forEach(product => {
-                            // Validate product object has required properties
-                            if (!product.productID || !product.productName) {
-                                console.warn('Invalid product data:', product);
-                                return;
-                            }
-
-                            const listItem = document.createElement('li');
-                            // Add price and other relevant information
-                            listItem.innerHTML = `
-                                <span class="product-name">${product.productName}</span>
-                                ${product.price ? `<span class="product-price">${product.price.toFixed(2)} đ</span>` : ''}
-                            `;
-                            listItem.className = 'suggestion-item';
-
-                            listItem.addEventListener('click', () => {
-                                window.location.href = `/product_customer/product?id=${product.productID}`;
-                            });
-
-                            list.appendChild(listItem);
-                            console.log('add Product:', product);
-                        });
-
-                        suggestionsContainer.appendChild(list);
-                        console.log('add list successful:', list);
-                    } else {
-                        const noResults = document.createElement('div');
-                        noResults.textContent = 'Không tìm thấy sản phẩm nào';
-                        noResults.className = 'no-results';
-                        suggestionsContainer.appendChild(noResults);
-                    }
-                    
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    suggestionsContainer.innerHTML = `
-                        <div class="error-message">
-                            Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại sau.
-                        </div>
-                    `;
-                });
-        } else {
-            suggestionsContainer.style.display = 'none';
-            suggestionsContainer.innerHTML = '';
-        }
-    });
-
-    // Add debouncing to prevent too many API calls
-        let searchTimeout;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                // Trigger search here
-            }, 300);
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!suggestionsContainer.contains(e.target) && e.target !== searchInput) {
-                suggestionsContainer.innerHTML = '';
-                suggestionsContainer.style.display = 'none';
-            }
-        });
-    });
-
 
         let currentPosition = 0;
         const productsPerView = 4;
