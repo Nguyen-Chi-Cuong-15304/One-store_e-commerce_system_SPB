@@ -64,7 +64,7 @@ public class product_customerController {
     private EvaluateRepository evaluateProductRepository;
 
     @GetMapping("/product")
-    public String getProduct(@RequestParam("id") int id, Model model) {
+    public String getProduct(@RequestParam int id, Model model) {
         Product product = productRepository.findById(id).get();
         product.setViewCount(product.getViewCount() + 1);
         productRepository.save(product);
@@ -79,13 +79,13 @@ public class product_customerController {
         return "product";
     }
     @GetMapping("/remove")
-    public String remove(@RequestParam("id") int id, Model model) {
+    public String remove(@RequestParam int id, Model model) {
         CartItem cartItem = cartItemRepository.findByCartItemID(id);
         cartItemRepository.delete(cartItem);
         return "redirect:/product_customer/shoppingcart";
     }
     @GetMapping("/addtocart")
-    public String addtocart(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes, @RequestParam("quantity") int quantity) {
+    public String addtocart(@RequestParam int id, Model model, RedirectAttributes redirectAttributes, @RequestParam int quantity) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
@@ -150,7 +150,7 @@ public class product_customerController {
     }
     
     @PostMapping("/paynow")
-    public String postMethodName(Model model, @ModelAttribute("cartWrapper") CartWrapper cartWrapper, RedirectAttributes redirectAttributes) {
+    public String postMethodName(Model model, @ModelAttribute CartWrapper cartWrapper, RedirectAttributes redirectAttributes) {
         // for(CartItem cartItem : cartItems){
         //     cartItemRepository.save(cartItem);
         // }
@@ -223,7 +223,7 @@ public class product_customerController {
         return "user/checkoutpage";
     }
     @GetMapping("/checkoutpage")
-    public String checkoutpage(Model model, @ModelAttribute("order") Orders order, @ModelAttribute("cartWrapper") CartWrapper cartWrapper) {
+    public String checkoutpage(Model model, @ModelAttribute Orders order, @ModelAttribute CartWrapper cartWrapper) {
         
         if(!model.containsAttribute("orderItemWrapper")){
             List<OrderItem> orderItems = new ArrayList<OrderItem>();
@@ -253,7 +253,7 @@ public class product_customerController {
        
     }
     @PostMapping("/checkout")
-    public String checkout(Model model, @ModelAttribute("orderItemWrapper") OrderItemWrapper orderItemWrapper, @ModelAttribute("cartWrapper") CartWrapper cartWrapper) {
+    public String checkout(Model model, @ModelAttribute OrderItemWrapper orderItemWrapper, @ModelAttribute CartWrapper cartWrapper) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
@@ -282,13 +282,13 @@ public class product_customerController {
 
     
     @GetMapping("/search")
-    public ResponseEntity<List<Product>> searchProducts(@RequestParam("query") String query) {
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String query) {
         List<Product> products = productRepository.findByProductNameContainingIgnoreCase(query);
         return ResponseEntity.ok(products);
     }
 
     @PostMapping("/evaluate")
-    public String evaluate(@RequestParam("productID") int id, @RequestParam("evaluateContent") String evaluateContent, Model model) {
+    public String evaluate(@RequestParam("productID") int id, @RequestParam String evaluateContent, Model model) {
         Evaluate_Product evaluate = new Evaluate_Product();
         evaluate.setProductID(id);
         evaluate.setEvaluateContent(evaluateContent);

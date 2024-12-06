@@ -3,7 +3,6 @@ package com.example.Project1.service;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 
@@ -37,12 +36,12 @@ public class ProductService {
         String fileName = createTime.getTime() + file.getOriginalFilename();
         try {
             String uploadDir ="public/images/";
-            Path   uploadPath = Paths.get(uploadDir);
+            Path   uploadPath = Path.of(uploadDir);
             if(!Files.exists(uploadPath)){
                 Files.createDirectories(uploadPath);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, Paths.get(uploadDir+ fileName), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, Path.of(uploadDir+ fileName), StandardCopyOption.REPLACE_EXISTING);
 
             }
         }

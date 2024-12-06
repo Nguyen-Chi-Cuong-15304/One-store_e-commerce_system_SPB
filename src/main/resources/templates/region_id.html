@@ -100,10 +100,10 @@
               <span class="username" th:text="${#authentication.name}"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/userInfo/changePassword">Thông tin cá nhân</a></li>
+              <li><a class="dropdown-item" href="/userInfo/changePassword">Đổi mật khẩu</a></li>
               <li><a class="dropdown-item" href="/userInfo/AllOrders">Danh sách đơn hàng</a></li>
-              <li><a class="dropdown-item" href="/admin/order/orderManagement">Điều chỉnh đơn hàng (admin)</a></li>
-              <li><a class="dropdown-item" href="/admin/order/stats">Dashboard</a></li>
+              <li><a class="dropdown-item" href="/admin/order/orderManagement" sec:authorize="hasRole('ROLE_admin')">Điều chỉnh đơn hàng (admin)</a></li>
+              <li><a class="dropdown-item" href="/admin/order/stats" sec:authorize="hasRole('ROLE_admin')">Dashboard</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
             </ul>

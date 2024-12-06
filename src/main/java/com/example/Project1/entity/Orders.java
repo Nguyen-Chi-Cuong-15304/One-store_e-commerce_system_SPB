@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 @Entity
 @Table(name = "orders")
 public class Orders {
@@ -34,6 +33,7 @@ public class Orders {
     public void setName(String name) {
         this.name = name;
     }
+    
     private int userID;
     private Date orderDate;
     private String status;
@@ -42,6 +42,7 @@ public class Orders {
     private String address;
     private String phone;
     private String name;
+
     public int getOrderID() {
         return orderID;
     }

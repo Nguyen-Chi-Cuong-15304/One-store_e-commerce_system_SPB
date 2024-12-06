@@ -14,16 +14,16 @@ import com.example.Project1.service.WebUserService;
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        return http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/").permitAll() 
                 .requestMatchers("/login","/mylogin", "/register").permitAll()  
                 //.requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/logout").permitAll()
-                .requestMatchers("/addproduct").permitAll()
-                .requestMatchers("/product/**").hasRole("customer")   
-                .requestMatchers("/supplier/**").hasRole("customer") 
+                .requestMatchers("/addproduct").hasRole("admin")
+                .requestMatchers("/product/**").hasRole("admin")   
+                .requestMatchers("/supplier/**").hasRole("admin") 
                 .requestMatchers("/public/**").permitAll()
                 .requestMatchers("/banner_slider_image/**").permitAll()
                 .requestMatchers("/product_image/**").permitAll()
@@ -32,8 +32,8 @@ public class SecurityConfig {
                 .requestMatchers("/checkoutpage").permitAll()
                 .requestMatchers("/userInfo/**").permitAll()
                 .requestMatchers("/navi/**").permitAll()
-                .requestMatchers("/admin/order/**").permitAll()
-                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/admin/order/**").hasRole("admin")
+                .requestMatchers("/api/**").hasRole("admin")
                 .requestMatchers("/css/**", "/js/**").permitAll()
                        
                 .anyRequest().authenticated()                    // Mọi yêu cầu khác đều phải đăng nhập
@@ -52,8 +52,9 @@ public class SecurityConfig {
             )
             .build();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

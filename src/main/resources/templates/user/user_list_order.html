@@ -86,10 +86,10 @@
               <span class="username" th:text="${#authentication.name}"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/userInfo/changePassword">Thông tin cá nhân</a></li>
+              <li><a class="dropdown-item" href="/userInfo/changePassword">Đổi mật khẩu</a></li>
               <li><a class="dropdown-item" href="/userInfo/AllOrders">Danh sách đơn hàng</a></li>
-              <li><a class="dropdown-item" href="/admin/order/orderManagement">Điều chỉnh đơn hàng (admin)</a></li>
-              <li><a class="dropdown-item" href="/admin/order/stats">Dashboard</a></li>
+              <li><a class="dropdown-item" href="/admin/order/orderManagement" sec:authorize="hasRole('ROLE_admin')">Điều chỉnh đơn hàng (admin)</a></li>
+              <li><a class="dropdown-item" href="/admin/order/stats" sec:authorize="hasRole('ROLE_admin')">Dashboard</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
             </ul>
@@ -124,6 +124,7 @@
                         <th>Tổng tiền</th>
                         <th>Trạng thái</th>
                         <th>Địa chỉ giao hàng</th>
+                        <th>Số điện thoại</th>
                         <th>Chi tiết</th>
                     </tr>
                 </thead>
@@ -134,6 +135,7 @@
                         <td th:text="${order.totalAmount}"></td>
                         <td th:text="${order.status}"></td>
                         <td th:text="${order.address}"></td>
+                        <td th:text="${order.phone}"></td>
                         <td>
                             <a th:href="@{/userInfo/orderDetail(id=${order.orderID})}" class="btn btn-primary btn-sm">Chi tiết</a>
                         </td>

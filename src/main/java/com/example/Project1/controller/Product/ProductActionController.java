@@ -3,7 +3,6 @@ package com.example.Project1.controller.Product;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ public class ProductActionController {
         return "product/add";
     }
     @PostMapping("/add")
-    public String postAdd(@ModelAttribute("productDto") ProductDto productDto, Model model, BindingResult bindingResult) {
+    public String postAdd(@ModelAttribute ProductDto productDto, Model model, BindingResult bindingResult) {
         
         if(productDto.getProductName().isEmpty()){
             bindingResult.addError(new FieldError("productDto", "productName", "Product name is required"));
@@ -88,12 +87,12 @@ public class ProductActionController {
         String fileName = createTime.getTime() + file.getOriginalFilename();
         try {
             String uploadDir ="public/product_image/";
-            Path   uploadPath = Paths.get(uploadDir);
+            Path   uploadPath = Path.of(uploadDir);
             if(!Files.exists(uploadPath)){
                 Files.createDirectories(uploadPath);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, Paths.get(uploadDir+ fileName), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, Path.of(uploadDir+ fileName), StandardCopyOption.REPLACE_EXISTING);
 
             }
         }
@@ -127,7 +126,7 @@ public class ProductActionController {
     }
 
     @GetMapping("/edit")
-    public String edit(@RequestParam("id") int id, Model model) {
+    public String edit(@RequestParam int id, Model model) {
         Product product = productRepository.findById(id).get();
         model.addAttribute("product", product);
         ProductDto productDto = new ProductDto();
@@ -158,7 +157,7 @@ public class ProductActionController {
 
             if(!productDto.getLinkImg().isEmpty()){
                 String uploadDir = "public/product_image/";
-                Path oldPath = Paths.get(uploadDir + product.getLinkImg());
+                Path oldPath = Path.of(uploadDir + product.getLinkImg());
 
                 try{
                     Files.delete(oldPath);
@@ -170,7 +169,7 @@ public class ProductActionController {
                 Date createTime = new Date(System.currentTimeMillis());
                 String fileName = createTime.getTime() + file.getOriginalFilename();
                 try (InputStream inputStream = file.getInputStream()) {
-                    Files.copy(inputStream, Paths.get(uploadDir + fileName), StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(inputStream, Path.of(uploadDir + fileName), StandardCopyOption.REPLACE_EXISTING);
                 }
                 catch (Exception e){
                     System.out.println("Exception: " + e.getMessage());
@@ -216,10 +215,10 @@ public class ProductActionController {
     }
     
     @GetMapping("/delete")
-    public String delete(@RequestParam("id") int id) {
+    public String delete(@RequestParam int id) {
         Product product = productRepository.findById(id).get();
         String uploadDir = "public/product_image/";
-        Path oldPath = Paths.get(uploadDir + product.getLinkImg());
+        Path oldPath = Path.of(uploadDir + product.getLinkImg());
         try{
             Files.delete(oldPath);
         }

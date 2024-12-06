@@ -88,16 +88,21 @@
                                     <tr>
                                         <th scope="col">Mã đơn hàng</th>
                                         <th scope="col">Ngày đặt hàng</th>
+                                        <!-- <th scope="col">Tên khách hàng</th> -->
                                         <th scope="col">Tổng tiền</th>
+                                        <th scope="col">Số điện thoại</th>
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Cập nhật trạng thái</th>
+                                        <th scope="col">Chi tiết</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="order : ${orders}">
                                         <td th:text="${order.orderID}"></td>
                                         <td th:text="${order.orderDate}"></td>
+                                        <!-- <td th:text="${order.username}"></td> -->
                                         <td th:text="${order.totalAmount}"></td>
+                                        <td th:text="${order.phone}"></td>
                                         <td th:text="${order.status}"></td>
                                         <td>
                                             <form th:action="@{/admin/order/updateStatus(id=${order.orderID})}" method="post">
@@ -113,6 +118,9 @@
                                                 </select>
                                                 <button type="submit">Cập nhật</button>
                                             </form>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/order/orderDetail(id=${order.orderID})}">Chi tiết</a>
                                         </td>
                                     </tr>
                                 </tbody>

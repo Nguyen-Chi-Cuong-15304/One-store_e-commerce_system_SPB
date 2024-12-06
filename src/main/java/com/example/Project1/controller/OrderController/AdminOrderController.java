@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.Project1.repository.CategoryRepository;
+import com.example.Project1.repository.OrderItemRepository;
 import com.example.Project1.repository.OrderRepository;
 import com.example.Project1.repository.ProductRepository;
-
+import com.example.Project1.repository.WebUserRepository;
+import com.example.Project1.entity.OrderItem;
 import com.example.Project1.entity.Orders;
+import com.example.Project1.entity.WebUser;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -31,6 +35,10 @@ public class AdminOrderController {
     private ProductRepository productRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private WebUserRepository webUserRepository;
 
     @GetMapping("/orderManagement")
     public String orderManagement(Model model, @RequestParam(required = false) String month, @RequestParam(required = false, defaultValue = "All") String status) {
@@ -99,6 +107,16 @@ public class AdminOrderController {
     public String getDashboardStats(Model model) {
         
         return "admin/adminDashboard";
+    }
+
+    @GetMapping("/orderDetail")
+    public String orderDetail(Model model, @RequestParam int id) {
+        int user_id = orderRepository.findById(id).get().getUserID();
+        WebUser user = webUserRepository.findById(user_id).get();
+        model.addAttribute("user", user);
+        List<OrderItem> orderItems = orderItemRepository.findByOrderID(id);
+        model.addAttribute("orderItems", orderItems);
+        return "admin/orderDetail";
     }
     
 }

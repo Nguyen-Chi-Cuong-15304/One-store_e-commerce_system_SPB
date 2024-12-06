@@ -9,7 +9,7 @@
       <link rel="stylesheet" href="/css/navbar.css">
       <link rel="stylesheet" href="/css/suggestion.css">
       <link rel="stylesheet" href="/css/card.css">
-      <title>Document</title>
+      <title>Nông sản sạch</title>
 
 </head>
 <body>
@@ -70,9 +70,9 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="/userInfo/changePassword">Đổi mật khẩu</a></li>
-                  <li><a class="dropdown-item" href="/userInfo/AllOrders">Danh sách đơn hàng</a></li>
-                  <li><a class="dropdown-item" href="/admin/order/orderManagement">Điều chỉnh đơn hàng (admin)</a></li>
-                  <li><a class="dropdown-item" href="/admin/order/stats">Dashboard</a></li>
+                  <li><a class="dropdown-item" href="/userInfo/AllOrders" sec:authorize="hasRole('ROLE_customer')">Danh sách đơn hàng</a></li>
+                  <li><a class="dropdown-item" href="/admin/order/orderManagement" sec:authorize="hasRole('ROLE_admin')">Điều chỉnh đơn hàng (admin)</a></li>
+                  <li><a class="dropdown-item" href="/admin/order/stats" sec:authorize="hasRole('ROLE_admin')">Dashboard</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Danh sách nhà cung cấp</a></li>
                 </ul>
@@ -130,7 +130,7 @@
 
     <div class="container ">
 
-          <div class="container about-section">
+          <div class="container about-section bg-body-secondary">
             <div class="row about-content">
                 <!-- Text Section -->
                 <div class="col-md-6 about-text ms-5" >

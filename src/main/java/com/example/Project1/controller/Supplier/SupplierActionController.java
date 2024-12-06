@@ -3,7 +3,6 @@ package com.example.Project1.controller.Supplier;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.util.List;
@@ -47,7 +46,7 @@ public class SupplierActionController {
         return "supplier/addSupplier";
     }
     @PostMapping("/add")
-    public String addSupplier(Model model, @ModelAttribute("supplierDto") SupplierDto supplierDto, BindingResult bindingResult) {
+    public String addSupplier(Model model, @ModelAttribute SupplierDto supplierDto, BindingResult bindingResult) {
         if(supplierDto.getSupplierName().isEmpty()){
             bindingResult.addError(new FieldError("supplierDto", "supplierName", "Supplier name is required"));
         }
@@ -77,12 +76,12 @@ public class SupplierActionController {
         String fileName = createTime.getTime() + file.getOriginalFilename();
         try {
             String uploadDir = "public/supplier_image/";
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Path.of(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, Paths.get(uploadDir, fileName), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, Path.of(uploadDir, fileName), StandardCopyOption.REPLACE_EXISTING);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -102,7 +101,7 @@ public class SupplierActionController {
         return "redirect:/supplier";
     }
     @GetMapping("/edit")
-    public String edit(@RequestParam("id") int id, Model model) {
+    public String edit(@RequestParam int id, Model model) {
         Supplier supplier = supplierRepository.findById(id).get();
         model.addAttribute("supplier", supplier);
         SupplierDto supplierDto = new SupplierDto();
@@ -145,7 +144,7 @@ public class SupplierActionController {
             }
             if(!supplierDto.getLinkImg().isEmpty()){
                 String uploadDir = "public/supplier_image/";
-                Path oldPath = Paths.get(uploadDir + supplier.getLinkImg());
+                Path oldPath = Path.of(uploadDir + supplier.getLinkImg());
                 try{
                     Files.delete(oldPath);
                 }
@@ -156,7 +155,7 @@ public class SupplierActionController {
                 Date createTime = new Date(System.currentTimeMillis());
                 String fileName = createTime.getTime() + file.getOriginalFilename();
                 try(InputStream inputStream = file.getInputStream()){
-                    Files.copy(inputStream, Paths.get(uploadDir, fileName), StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(inputStream, Path.of(uploadDir, fileName), StandardCopyOption.REPLACE_EXISTING);
                 }
                 catch (Exception exception) {
                     System.out.println("Exception: " + exception.getMessage());
@@ -179,7 +178,7 @@ public class SupplierActionController {
     public String delete(@RequestParam int id) {
         Supplier supplier = supplierRepository.findById(id).get();
         String uploadDir = "public/supplier_image/";
-        Path oldPath = Paths.get(uploadDir + supplier.getLinkImg());
+        Path oldPath = Path.of(uploadDir + supplier.getLinkImg());
         try{
             Files.delete(oldPath);
         }

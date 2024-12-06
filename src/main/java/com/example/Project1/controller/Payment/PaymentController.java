@@ -45,7 +45,7 @@ public class PaymentController {
     // Chuyển hướng người dùng đến cổng thanh toán VNPAY
     @PostMapping("/submitOrder")
     public String submidOrder(   
-                            HttpServletRequest request, @ModelAttribute("orderItemWrapper") OrderItemWrapper orderItemWrapper, @ModelAttribute("cartWrapper") CartWrapper cartWrapper){
+                            HttpServletRequest request, @ModelAttribute OrderItemWrapper orderItemWrapper, @ModelAttribute CartWrapper cartWrapper){
         
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         

@@ -36,8 +36,8 @@ public class pageController {
     private RegionRepository regionRepository;
     
     @GetMapping("/categoryDefault")
-    public String categoryDefault(Model model, @RequestParam(value="sortOption", required = false) String sortOption,
-        @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "6") int size) {
+    public String categoryDefault(Model model, @RequestParam(required = false) String sortOption,
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size) {
         
         Page<Product> products = null;
         Pageable pageable = PageRequest.of(page, size);
@@ -68,9 +68,9 @@ public class pageController {
         return "category";
     }
     @GetMapping("/showChoosenCategory/{id}")
-    public String showChoosenCategory(@PathVariable int id, @RequestParam(value="sortOption", required = false) String sortOption ,
-        Model model, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "0") int page,
-        @RequestParam(value = "size", defaultValue = "6") int size) {
+    public String showChoosenCategory(@PathVariable int id, @RequestParam(required = false) String sortOption ,
+        Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "6") int size) {
 
         Page<Product> products = null;
         Pageable pageable = PageRequest.of(page, size);
@@ -105,8 +105,8 @@ public class pageController {
     }
     
     @GetMapping("/categoryByRegion")
-    public String categoryByRegion(Model model, @RequestParam(value="sortOption", required = false) String sortOption,
-        @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "6") int size) {
+    public String categoryByRegion(Model model, @RequestParam(required = false) String sortOption,
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size) {
         
         List<Region> regions = regionRepository.findAll();
         Page<Product> products = null;
@@ -139,8 +139,8 @@ public class pageController {
     }
 
     @GetMapping("/categoryByRegion/{id}")
-    public String findByRegionID(@PathVariable int id, @RequestParam(value="sortOption", required = false) String sortOption, 
-        Model model, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "6") int size) {
+    public String findByRegionID(@PathVariable int id, @RequestParam(required = false) String sortOption, 
+        Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size) {
         
         Page<Product> products = null;
         Pageable pageable = PageRequest.of(page, size);

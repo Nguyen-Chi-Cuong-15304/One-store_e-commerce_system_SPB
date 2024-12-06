@@ -2,19 +2,14 @@ package com.example.Project1.controller.UserInfoController;
 
 import java.util.List;
 
-import javax.naming.Binding;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-
 import com.example.Project1.entity.Orders;
 import com.example.Project1.entity.OrderItem;
 import com.example.Project1.entity.WebUser;
-import com.example.Project1.modals.WebUserDto;
 import com.example.Project1.repository.OrderItemRepository;
 import com.example.Project1.repository.OrderRepository;
 import com.example.Project1.repository.WebUserRepository;
@@ -22,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -40,7 +34,7 @@ public class UserInfoController {
 
 
     @GetMapping("/userInfo")
-    public String userInfo(@RequestParam("id") String id) {
+    public String userInfo(@RequestParam String id) {
         return "userInfo";
     }
 
@@ -51,7 +45,7 @@ public class UserInfoController {
     }
 
     @PostMapping("/changePassword")
-    public String changePassword( Model model, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) {
+    public String changePassword( Model model, @RequestParam String oldPassword, @RequestParam String newPassword, @RequestParam String confirmPassword) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         WebUser user = webUserRepository.findByEmail(email);
@@ -84,7 +78,7 @@ public class UserInfoController {
     }
     
     @GetMapping("/orderDetail")
-    public String orderDetail(@RequestParam("id") int id, Model model) {
+    public String orderDetail(@RequestParam int id, Model model) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         

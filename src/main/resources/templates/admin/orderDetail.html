@@ -115,7 +115,12 @@
   </nav>
 
       <div class="container mt-5 pt-5">
-        <h2>Thông tin đơn hàng của <span style="color: #7c4dff;" th:text="${userName}"></span> </h2>
+        <h2>Thông tin đơn hàng của <span style="color: #7c4dff;" th:text="${user.username}"></span> </h2>
+        <style>
+          .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+          }
+        </style>
 
         <div class="">
             <table border="1">
