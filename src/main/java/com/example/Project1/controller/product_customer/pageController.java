@@ -18,6 +18,7 @@ import com.example.Project1.entity.Region;
 import com.example.Project1.repository.CategoryRepository;
 import com.example.Project1.repository.ProductRepository;
 import com.example.Project1.repository.RegionRepository;
+import com.example.Project1.repository.SupplierRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -34,6 +35,8 @@ public class pageController {
     private CategoryRepository categoryRepository;
     @Autowired
     private RegionRepository regionRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
     
     @GetMapping("/categoryDefault")
     public String categoryDefault(Model model, @RequestParam(required = false) String sortOption,
@@ -171,6 +174,14 @@ public class pageController {
         model.addAttribute("currentID", id);
         model.addAttribute("sortOption", sortOption);
         return "region_id";
+    }
+
+
+    @GetMapping("/supplier_show_info")
+    public String supplier_show_info(Model model, @RequestParam int id) {
+        model.addAttribute("supplier", supplierRepository.findById(id).get());
+        model.addAttribute("products", productRepository.findTop3ProductWithSupplierID(id));
+        return "supplier_show_info";
     }
     
     

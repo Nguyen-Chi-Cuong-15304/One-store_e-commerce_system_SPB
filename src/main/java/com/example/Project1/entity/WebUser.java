@@ -20,6 +20,13 @@ public class WebUser {
     private String address;
     private String phoneNumber;
     private String roles;
+    private int totalCost;
+    public int getTotalCost() {
+        return totalCost;
+    }
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
+    }
     public int getUserID() {
         return userID;
     }

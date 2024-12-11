@@ -118,5 +118,14 @@ public class AdminOrderController {
         model.addAttribute("orderItems", orderItems);
         return "admin/orderDetail";
     }
+
+
+    @GetMapping("/allCustomerAndCost")
+    public String allCustomerAndCost(Model model) {
+        List<WebUser> users = webUserRepository.findByTotalCostDesc();
+        model.addAttribute("users", users);
+        return "admin/adminViewCustomer";
+    }
+    
     
 }

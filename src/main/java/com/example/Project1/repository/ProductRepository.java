@@ -131,4 +131,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
                    "ORDER BY p.productID DESC")
     List<Product> findRelatedProducts( @Param("productID") int productID);
 
+    @Query(value = "SELECT p FROM Product p, Supplier s WHERE p.supplierID = s.supplierID AND s.supplierID = :id") 
+    List<Product> findTop3ProductWithSupplierID(int id);
+
 }

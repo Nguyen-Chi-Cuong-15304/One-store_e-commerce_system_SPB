@@ -249,7 +249,7 @@
                        <div class="card-body">
                          <h5 class="card-title"><b><span th:text="${supplier.supplierName}"></span></b></h5>
                          <p class="card-text"><span th:text="${supplier.description}"></span></p>
-                         <a href="#" class="btn-custom">Xem ngay</a>
+                         <a th:href="@{/navi/supplier_show_info(id=${supplier.supplierID})}" class="btn-custom">Xem ngay</a>
                        </div>
                      </div>
                </div>

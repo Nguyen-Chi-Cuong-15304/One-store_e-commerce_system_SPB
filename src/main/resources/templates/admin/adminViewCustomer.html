@@ -45,7 +45,7 @@
                             <a class="nav-link" href="/supplier/">Nhà cung cấp</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/order/allCustomerAndCost">Khách hàng</a>
+                            <a class="nav-link" href="#">Khách hàng</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Báo cáo</a>
@@ -66,8 +66,8 @@
                     <h1 class="h2">Dashboard</h1>
                 </div>
                 <div class="container">
-                        <h2>Danh sách các đơn hàng</h2>
-                        <form th:action="@{/admin/order/orderManagement/findByMonth}" method="post">
+                        <h2>Danh sách khách hàng</h2>
+                        <!-- <form th:action="@{/admin/order/orderManagement/findByMonth}" method="post">
                             <label for="month">Chọn tháng:</label>
                             <input type="month" id="month" name="month" th:value="${month}">
                             <label for="status">Chọn trạng thái:</label>
@@ -80,48 +80,30 @@
                                 <option value="Đã thanh toán" th:selected = "${status == 'Đã thanh toán'}">Đã thanh toán</option>
                             </select>
                             <button type="submit">Tìm kiếm</button>
-                        </form>
+                        </form> -->
                         <br>
                         <div class="card">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Mã đơn hàng</th>
-                                        <th scope="col">Ngày đặt hàng</th>
+                                        <th scope="col">Mã khách hàng</th>
                                         <th scope="col">Tên khách hàng</th>
-                                        <th scope="col">Tổng tiền</th>
+                                        <th scope="col">Email</th>
                                         <th scope="col">Số điện thoại</th>
-                                        <th scope="col">Trạng thái</th>
-                                        <th scope="col">Cập nhật trạng thái</th>
-                                        <th scope="col">Chi tiết</th>
+                                        <th scope="col">Địa chỉ</th>
+                                        <th scope="col">Tổng số tiền mua sắm</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="order : ${orders}">
-                                        <td th:text="${order.orderID}"></td>
-                                        <td th:text="${order.orderDate}"></td>
-                                        <td th:text="${order.name}"></td>
-                                        <td th:text="${order.totalAmount}"></td>
-                                        <td th:text="${order.phone}"></td>
-                                        <td th:text="${order.status}"></td>
-                                        <td>
-                                            <form th:action="@{/admin/order/updateStatus(id=${order.orderID})}" method="post">
-                                                <input type="hidden" th:name="orderID" th:value="${order.orderID}">
-                                                <input type="hidden" th:name="month" th:value="${month}">
-                                                <input type="hidden" th:name="curr_status" th:value="${status}">
-                                                <select name="status_order">
-                                                    <option value="Đã xác nhận">Đã xác nhận</option>
-                                                    <option value="Đang giao hàng">Đang giao hàng</option>
-                                                    <option value="Đã giao hàng">Đã giao hàng</option>
-                                                    <option value="Đã thanh toán">Đã thanh toán</option>
-                                                    
-                                                </select>
-                                                <button type="submit">Cập nhật</button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <a th:href="@{/admin/order/orderDetail(id=${order.orderID})}">Chi tiết</a>
-                                        </td>
+                                    <tr th:each="user : ${users}">
+                                        <td th:text="${user.userID}" class="text-center align-middle">1</td>
+                                        <td th:text="${user.fullName}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td th:text="${user.phoneNumber}"></td>
+                                        <td th:text="${user.address}"></td>
+                                        <td th:text="${user.totalCost}" class="text-center align-middle"></td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
