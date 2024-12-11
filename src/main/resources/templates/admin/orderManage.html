@@ -88,7 +88,7 @@
                                     <tr>
                                         <th scope="col">Mã đơn hàng</th>
                                         <th scope="col">Ngày đặt hàng</th>
-                                        <!-- <th scope="col">Tên khách hàng</th> -->
+                                        <th scope="col">Tên khách hàng</th>
                                         <th scope="col">Tổng tiền</th>
                                         <th scope="col">Số điện thoại</th>
                                         <th scope="col">Trạng thái</th>
@@ -100,7 +100,7 @@
                                     <tr th:each="order : ${orders}">
                                         <td th:text="${order.orderID}"></td>
                                         <td th:text="${order.orderDate}"></td>
-                                        <!-- <td th:text="${order.username}"></td> -->
+                                        <td th:text="${order.name}"></td>
                                         <td th:text="${order.totalAmount}"></td>
                                         <td th:text="${order.phone}"></td>
                                         <td th:text="${order.status}"></td>
