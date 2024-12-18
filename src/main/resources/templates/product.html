@@ -244,17 +244,17 @@
 
                     </style>
                     <div class="tab-pane fade p-3 reviews" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                        <h4>Những đánh giá của người dùng</h4>
-                        <div th:each="userEvaluate : ${evaluates}">
+                        <!-- <h4>Những đánh giá của người dùng</h4> -->
+                        <!-- <div th:each="userEvaluate : ${evaluates}">
                             <p style="color: #7c4dff;"><span> --- </span><span th:text="${userEvaluate.evaluateContent}"></span></p>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="tab-pane fade p-3" id="evaluate" role="tabpanel" aria-labelledby="evaluate-tab">
                         <h4>Them danh gia vao day</h4>
-                        <form th:action="@{/product_customer/evaluate}" method="post" id="evaluateForm">
+                        <form id="evaluateForm" th:action="@{/product_customer/evaluate}" method="post" >
                             <input type="hidden" name="productID" th:value="${product.productID}">
                             <textarea class="form-control" id="evaluateOfUser" rows="6" name="evaluateContent" placeholder="Nhập đánh giá của bạn"></textarea>
-                            <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                            <button  class="btn btn-primary" id="submitEvaluateBtn">Gửi đánh giá</button>
                         </form>
 
                         <script>
@@ -415,5 +415,6 @@
 
 
     </script>
+    <script src="/js/evaluate.js"></script>
 </body>
 </html>

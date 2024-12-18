@@ -3,9 +3,11 @@ package com.example.Project1.controller.product_customer;
 import java.math.BigDecimal;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,8 @@ import com.example.Project1.repository.OrderRepository;
 import com.example.Project1.repository.ProductRepository;
 import com.example.Project1.repository.WebUserRepository;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -287,13 +291,39 @@ public class product_customerController {
         return ResponseEntity.ok(products);
     }
 
+    // @PostMapping("/evaluate")
+    // public String evaluate(@RequestParam("productID") int id, @RequestParam String evaluateContent, Model model) {
+    //     Evaluate_Product evaluate = new Evaluate_Product();
+    //     evaluate.setProductID(id);
+    //     evaluate.setEvaluateContent(evaluateContent);
+    //     evaluateProductRepository.save(evaluate);
+    //     return "redirect:/product_customer/product?id=" + id;
+    // }
+
+    @GetMapping("/getEvaluates")
+    public ResponseEntity<List<Evaluate_Product>> getEvaluate(@RequestParam int productID) {
+        List<Evaluate_Product> evaluates = evaluateProductRepository.findByProductID(productID);
+        return ResponseEntity.ok(evaluates);
+    }   
+    
     @PostMapping("/evaluate")
-    public String evaluate(@RequestParam("productID") int id, @RequestParam String evaluateContent, Model model) {
-        Evaluate_Product evaluate = new Evaluate_Product();
-        evaluate.setProductID(id);
-        evaluate.setEvaluateContent(evaluateContent);
-        evaluateProductRepository.save(evaluate);
-        return "redirect:/product_customer/product?id=" + id;
+    public ResponseEntity<String> saveEvaluate(
+        @RequestParam("productID") int productID,
+        @RequestParam("evaluateContent") String evaluateContent) {
+    try {
+        // Tạo đối tượng đánh giá
+        Evaluate_Product evaluation = new Evaluate_Product();
+        evaluation.setProductID(productID);
+        evaluation.setEvaluateContent(evaluateContent);
+
+        // Lưu vào database
+        evaluateProductRepository.save(evaluation);
+
+        return new ResponseEntity<>("Đánh giá đã được lưu thành công!", HttpStatus.OK);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new ResponseEntity<>("Lỗi khi lưu đánh giá", HttpStatus.BAD_REQUEST);
     }
+}
     
 }
