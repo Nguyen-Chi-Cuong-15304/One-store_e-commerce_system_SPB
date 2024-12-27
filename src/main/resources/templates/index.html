@@ -145,7 +145,7 @@
                     <p class="about-description">
                         Sản phẩm tươi sạch từ những nhà cung cấp uy tín hàng đầu.
                     </p>
-                    <a href="#" class="btn btn-custom">Tìm hiểu ngay</a>
+                    <a th:href="@{/about}" class="btn btn-custom">Tìm hiểu ngay</a>
                 </div>
     
                 <!-- Image Section -->
@@ -181,7 +181,7 @@
                     <p class="about-description">
                           Đổi trả nhanh chóng, thuận tiện
                     </p>
-                    <a href="#" class="btn btn-custom">Tìm hiểu ngay</a>
+                    <a th:href="@{/about}" class="btn btn-custom">Tìm hiểu ngay</a>
                 </div>
             </div>
         </div>
@@ -231,7 +231,7 @@
                          <img th:src="@{'/product_image/'+ ${product.linkImg}}" class="card-img-top" alt="...">
                          <div class="card-body">
                            <h5 class="card-title"><b><span th:text="${product.productName}"></span></b></h5>
-                           <p class="card-text"><b><span>Giá: </span></b><span th:text="${product.price}"></span></p>
+                           <p class="card-text"><b><span>Giá: </span></b><span th:text="${product.price}"></span> đ/kg</p>
                            <a th:href="@{/product_customer/product(id=${product.productID})}" class="btn-custom">Xem ngay</a>
                          </div>
                        </div>

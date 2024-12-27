@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nông Sản Sạch - Thực phẩm organic cho cuộc sống khỏe mạnh</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1920/600');
+            background-size: cover;
+            background-position: center;
+            padding: 150px 0;
+            color: white;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #198754;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-card {
+            border-left: 4px solid #198754;
+        }
+
+        .service-card {
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .testimonial-section {
+            background-color: #f8f9fa;
+        }
+
+        .policy-card {
+            height: 100%;
+        }
+
+        .organic-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #198754;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fas fa-leaf text-success"></i> Nông Sản Sạch
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#trang-chu">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dich-vu">Dịch vụ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#san-pham">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#thanh-tuu">Thành tựu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#chinh-sach">Chính sách</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#lien-he">Liên hệ</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Trang mua hàng</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="trang-chu">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">Nông Sản Sạch</h1>
+            <p class="lead mb-4">Mang đến cho gia đình bạn những sản phẩm organic chất lượng cao</p>
+            <button class="btn btn-success btn-lg me-3">Mua ngay</button>
+            <button class="btn btn-outline-light btn-lg">Tìm hiểu thêm</button>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-5" background-image="url('/api/placeholder/1920/600')">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-certificate feature-icon"></i>
+                    <h4>Chứng nhận VietGAP</h4>
+                    <p>Đạt tiêu chuẩn an toàn thực phẩm quốc gia</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-truck feature-icon"></i>
+                    <h4>Giao hàng nhanh</h4>
+                    <p>Miễn phí giao hàng trong ngày</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-heart feature-icon"></i>
+                    <h4>Cam kết chất lượng</h4>
+                    <p>Đổi trả trong vòng 24h</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="py-5 bg-light" id="dich-vu">
+        <div class="container">
+            <h2 class="text-center mb-5">Dịch Vụ Của Chúng Tôi</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card service-card h-100">
+                        <img th:src="@{/service/organicIMG.jpg}" class="card-img-top" alt="Cung cấp thực phẩm">
+                        <div class="card-body">
+                            <h5 class="card-title">Cung Cấp Thực Phẩm Organic</h5>
+                            <p class="card-text">Cung cấp các sản phẩm organic cho nhà hàng, siêu thị và người tiêu dùng.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card service-card h-100">
+                        <img th:src="@{/service/tuvandinhduong.jpg}" class="card-img-top" alt="Tư vấn" style="width: 400; height: 300;">
+                        <div class="card-body">
+                            <h5 class="card-title">Tư Vấn Dinh Dưỡng</h5>
+                            <p class="card-text">Đội ngũ chuyên gia dinh dưỡng tư vấn chế độ ăn uống healthy.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card service-card h-100">
+                        <img th:src="@{/service/daotao.jpg}" class="card-img-top" alt="Đào tạo">
+                        <div class="card-body">
+                            <h5 class="card-title">Đào Tạo Nông Nghiệp Sạch</h5>
+                            <p class="card-text">Chương trình đào tạo kỹ thuật trồng rau sạch cho nông dân.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="py-5" id="san-pham">
+        <div class="container">
+            <h2 class="text-center mb-5">Sản Phẩm Nổi Bật</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card product-card">
+                        <div class="position-relative">
+                            <img th:src="@{'/product_image/raucaixanh.jpg'}" class="card-img-top" alt="Rau xanh">
+                            <span class="organic-badge">Organic</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Rau Cải Xanh</h5>
+                            <p class="card-text">49.000đ/kg</p>
+                            <a th:href="@{/navi/categoryDefault}" class="btn btn-success w-100">Mua hàng</a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card product-card">
+                        <div class="position-relative">
+                            <img th:src="@{'/product_image/cachua.jpg'}" class="card-img-top" alt="Cà chua">
+                            <span class="organic-badge">Organic</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Cà Chua</h5>
+                            <p class="card-text">35.000đ/kg</p>
+                            <a th:href="@{/navi/categoryDefault}" class="btn btn-success w-100">Mua hàng</a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card product-card">
+                        <div class="position-relative">
+                            <img th:src="@{'/product_image/gaolutden.jpg'}" class="card-img-top" alt="Gạo lứt">
+                            <span class="organic-badge">Organic</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Gạo Lứt</h5>
+                            <p class="card-text">85.000đ/kg</p>
+                            <a th:href="@{/navi/categoryDefault}" class="btn btn-success w-100">Mua hàng</a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card product-card">
+                        <div class="position-relative">
+                            <img th:src="@{'/product_image/camsanh.jpg'}" class="card-img-top" alt="Trái cây">
+                            <span class="organic-badge">Organic</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Cam Sành</h5>
+                            <p class="card-text">75.000đ/kg</p>
+                            <a th:href="@{/navi/categoryDefault}" class="btn btn-success w-100">Mua hàng</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements -->
+    <section class="py-5 bg-light" id="thanh-tuu">
+        <div class="container">
+            <h2 class="text-center mb-5">Thành Tựu Của Chúng Tôi</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card achievement-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Top 10 Doanh Nghiệp Nông Nghiệp 2023</h5>
+                            <p class="card-text">Được bình chọn bởi Hiệp hội Nông nghiệp Sạch Việt Nam</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card achievement-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Chứng Nhận An Toàn Thực Phẩm Quốc Tế</h5>
+                            <p class="card-text">Đạt chuẩn ISO 22000:2018 về an toàn thực phẩm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card achievement-card">
+                        <div class="card-body">
+                            <h5 class="card-title">100,000+ Khách Hàng Tin Tưởng</h5>
+                            <p class="card-text">Phục vụ hơn 100,000 khách hàng trên toàn quốc</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card achievement-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Giải Thưởng Sản Phẩm Xanh</h5>
+                            <p class="card-text">Được trao tặng bởi Bộ Nông nghiệp và Phát triển Nông thôn</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Return Policy -->
+    <section class="py-5" id="chinh-sach">
+        <div class="container">
+            <h2 class="text-center mb-5">Chính Sách Đổi Trả</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card policy-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Đổi Trả Trong 24h</h5>
+                            <p class="card-text">Hoàn tiền 100% nếu sản phẩm không đúng chất lượng cam kết</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Không đúng khối lượng</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Không tươi mới</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Không đúng sản phẩm</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card policy-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Quy Trình Đổi Trả</h5>
+                            <p class="card-text">Các bước đổi trả đơn giản, nhanh chóng</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Liên hệ hotline</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Gửi hình ảnh sản phẩm</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Nhân viên đến tận nơi đổi trả</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card policy-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cam Kết Hoàn Tiền</h5>
+                            <p class="card-text">Hoàn tiền nhanh chóng qua các hình thức</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Chuyển khoản ngân hàng</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Ví điện tử</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Tiền mặt</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5 testimonial-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Khách Hàng Nói Gì Về Chúng Tôi</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"Sản phẩm rất tươi ngon, giao hàng nhanh và đóng gói cẩn thận. Tôi rất hài lòng với dịch vụ của Nông Sản Sạch."</p>
+                            <div class="d-flex align-items-center">
+                                <img th:src="@{'/avatar/user.jpg'}" class="rounded-circle me-3" alt="Customer" style="width: 50px; height: 50px;">
+                                <div>
+                                    <h6 class="mb-0">Nguyễn Văn A</h6>
+                                    <small class="text-muted">Khách hàng thân thiết</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"Đội ngũ nhân viên tư vấn rất nhiệt tình, am hiểu về sản phẩm. Giá cả hợp lý cho sản phẩm organic."</p>
+                            <div class="d-flex align-items-center">
+                                <img th:src="@{'/avatar/user.jpg'}" class="rounded-circle me-3" alt="Customer" style="width: 50px; height: 50px;">
+                                <div>
+                                    <h6 class="mb-0">Trần Thị B</h6>
+                                    <small class="text-muted">Chủ nhà hàng</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                            </div>
+                            <p class="card-text">"Chất lượng sản phẩm rất ổn định. Tôi đã sử dụng dịch vụ được 2 năm và chưa bao giờ thất vọng."</p>
+                            <div class="d-flex align-items-center">
+                                <img th:src="@{'/avatar/user.jpg'}" class="rounded-circle me-3" alt="Customer" style="width: 50px; height: 50px;">
+                                <div>
+                                    <h6 class="mb-0">Lê Văn C</h6>
+                                    <small class="text-muted">Quản lý siêu thị</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="py-5" id="lien-he">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h2 class="mb-4">Liên Hệ Với Chúng Tôi</h2>
+                    <div class="mb-4">
+                        <h5><i class="fas fa-map-marker-alt text-success me-2"></i>Địa Chỉ</h5>
+                        <p>123 Đường ABC, Quận XYZ, TP.HCM</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5><i class="fas fa-phone text-success me-2"></i>Điện Thoại</h5>
+                        <p>Hotline: 1900 1234</p>
+                        <p>Hỗ trợ: 0123 456 789</p>
+                    </div>
+                    <div class="mb-4">
+                        <h5><i class="fas fa-envelope text-success me-2"></i>Email</h5>
+                        <p>info@nongsansach.com</p>
+                        <p>support@nongsansach.com</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="btn btn-outline-success me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-success me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-success me-2"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="btn btn-outline-success"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <form class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Gửi Tin Nhắn</h5>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" placeholder="Họ và tên">
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email">
+                            </div>
+                            <div class="mb-3">
+                                <input type="tel" class="form-control" placeholder="Số điện thoại">
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" rows="4" placeholder="Nội dung tin nhắn"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Gửi tin nhắn</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5>Về Nông Sản Sạch</h5>
+                    <p>Chúng tôi cam kết mang đến những sản phẩm nông nghiệp organic chất lượng cao, đảm bảo an toàn cho sức khỏe người tiêu dùng.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Chính Sách</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Chính sách bảo mật</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Chính sách vận chuyển</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Chính sách thanh toán</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Đăng Ký Nhận Tin</h5>
+                    <p>Nhận thông tin về sản phẩm mới và khuyến mãi</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email của bạn">
+                        <button class="btn btn-success" type="button">Đăng ký</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 Nông Sản Sạch. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

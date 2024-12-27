@@ -13,6 +13,8 @@ import com.example.Project1.entity.Product;
 import com.example.Project1.entity.Supplier;
 import com.example.Project1.repository.ProductRepository;
 import com.example.Project1.repository.SupplierRepository;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -36,6 +38,10 @@ public class HomeController {
         return  "contact";
     }
 
+    @GetMapping("/about")
+    public String about() {
+        return  "about";
+    }
     
     
 }
