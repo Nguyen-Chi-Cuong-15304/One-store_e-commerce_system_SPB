@@ -257,7 +257,7 @@ public class product_customerController {
        
     }
     @PostMapping("/checkout")
-    public String checkout(Model model, @ModelAttribute OrderItemWrapper orderItemWrapper, @ModelAttribute CartWrapper cartWrapper) {
+    public String checkout(Model model, @ModelAttribute OrderItemWrapper orderItemWrapper, @ModelAttribute CartWrapper cartWrapper, RedirectAttributes redirectAttributes) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         WebUser user = userRepository.findByEmail(email);
@@ -280,6 +280,8 @@ public class product_customerController {
         }
         order.setTotalAmount(totalAmount);
         orderRepository.save(order);
+
+        redirectAttributes.addFlashAttribute("message_success", "Đặt hàng thành công");
         
         return "redirect:/product_customer/shoppingcart";
     }

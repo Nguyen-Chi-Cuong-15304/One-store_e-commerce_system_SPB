@@ -160,7 +160,7 @@
 
                 <!-- Sort Filter -->
                 <div class="mb-3">
-                    <form method="get" th:action="@{/navi/categoryDefault}" id="sortForm">
+                    <form method="get" th:action="@{/navi/showChoosenCategory/{id}(id = ${currentID})}" id="sortForm">
                         <label for="sortOption" class="form-label">Sắp xếp theo</label>
                         <select id="sortOption" name="sortOption" class="form-select" onchange="document.getElementById('sortForm').submit()">
                             <option value="popular" th:selected="${sortOption == 'popular'}">Được xem nhiều nhất</option>
